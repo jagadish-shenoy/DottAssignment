@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_maps.*
 import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 
 
 class MapsActivity : AppCompatActivity(),
@@ -20,17 +21,14 @@ class MapsActivity : AppCompatActivity(),
 
     private lateinit var googleMap: GoogleMap
 
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private val fusedLocationProviderClient: FusedLocationProviderClient by inject { parametersOf(this) }
 
-    private lateinit var locationPermissionHelper: LocationPermissionHelper
+    private val locationPermissionHelper: LocationPermissionHelper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-
         (mapFragment as SupportMapFragment).getMapAsync(this)
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        locationPermissionHelper = LocationPermissionHelper(applicationContext)
     }
 
     override fun onStart() {
