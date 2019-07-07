@@ -29,6 +29,8 @@ class MapsActivity : AppCompatActivity(),
         setContentView(R.layout.activity_maps)
 
         (mapFragment as SupportMapFragment).getMapAsync(this)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        locationPermissionHelper = LocationPermissionHelper(applicationContext)
     }
 
     override fun onStart() {
@@ -75,4 +77,33 @@ class MapsActivity : AppCompatActivity(),
     }
 
     private fun updateDeviceLocationOnMap() {
+        /*
+         * Get the best and most recent location of the device, which may be null in rare
+         * cases when a location is not available.
+         */
+        try {
+
+            val locationRequest = LocationRequest.create()
+            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            fusedLocationProviderClient.requestLocationUpdates(
+                locationRequest,
+                object : LocationCallback() {
+                    override fun onLocationResult(result: LocationResult) {
+                        result.locations.firstOrNull()?.apply {
+                            googleMap.moveCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    LatLng(
+                                        latitude,
+                                        longitude
+                                    ), 14.0f
+                                )
+                            )
+                        }
+                    }
+                }, Looper.getMainLooper()
+            )
+        } catch (e: SecurityException) {
+            Log.e("Exception: %s", e.message)
+        }
+    }
 }
