@@ -1,8 +1,10 @@
 package com.dott.assignment
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
+import android.os.Looper
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -10,17 +12,39 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_maps.*
+import org.koin.android.ext.android.inject
+
 
 class MapsActivity : AppCompatActivity(),
-                     OnMapReadyCallback {
+    OnMapReadyCallback {
 
     private lateinit var googleMap: GoogleMap
+
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
+    private lateinit var locationPermissionHelper: LocationPermissionHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         (mapFragment as SupportMapFragment).getMapAsync(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        /*
+         * Request location permission, so that we can get the location of the
+         * device. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
+        with(locationPermissionHelper) {
+            if (isPermissionGranted()) {
+                updateDeviceLocationOnMap()
+            } else {
+                requestPermission(this@MapsActivity)
+            }
+        }
     }
 
     /**
@@ -39,4 +63,16 @@ class MapsActivity : AppCompatActivity(),
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (locationPermissionHelper.onRequestPermissionsResult(requestCode, grantResults)) {
+            updateDeviceLocationOnMap()
+        }
+    }
+
+    private fun updateDeviceLocationOnMap() {
 }
