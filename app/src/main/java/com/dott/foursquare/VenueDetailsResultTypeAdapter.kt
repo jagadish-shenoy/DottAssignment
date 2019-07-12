@@ -1,6 +1,5 @@
-package com.dott.foursquare
+package foursquare
 
-import com.dott.foursquare.VenueDetails
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
@@ -22,13 +21,13 @@ class VenueDetailsResultTypeAdapter : JsonDeserializer<VenueDetails> {
         val venueDetailsJson = venueDetailsResponseJson.getAsJsonObject("venue")
 
         return VenueDetails(
-                venueDetailsJson.get("id").asString,
-                venueDetailsJson.get("name").asString,
-                venueDetailsJson.get("description")?.asString ?: "N/A",
-                extractPhoto(venueDetailsJson),
-                extractAddressFromLocation(venueDetailsJson),
-                extractPhoneContact(venueDetailsJson),
-                venueDetailsJson.get("rating")?.asString ?: "N/A"
+            venueDetailsJson.get("id").asString,
+            venueDetailsJson.get("name").asString,
+            venueDetailsJson.get("description")?.asString ?: "N/A",
+            extractPhoto(venueDetailsJson),
+            extractAddressFromLocation(venueDetailsJson),
+            extractPhoneContact(venueDetailsJson),
+            venueDetailsJson.get("rating")?.asString ?: "N/A"
         )
     }
 

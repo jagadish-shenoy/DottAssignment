@@ -1,6 +1,5 @@
-package com.dott.foursquare
+package foursquare
 
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 const val BASE_URL_FOURSQUARE = "https://api.foursquare.com/v2/"

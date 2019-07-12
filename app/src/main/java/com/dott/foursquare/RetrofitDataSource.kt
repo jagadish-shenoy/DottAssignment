@@ -1,5 +1,6 @@
-package com.dott.foursquare
+package foursquare
 
+import com.dott.assignment.BuildConfig
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -14,21 +15,16 @@ class RetrofitDataSource {
 
     private val venueService: VenueService = createVenueService()
 
-    fun searchVenues(lat: Double, long: Double, categoryId:String, radius:Int, limit: Int): VenueSearchResult {
-        return try {
-            val response = venueService.searchVenues("$lat,$long", categoryId, radius, limit).execute()
-            if (response == null || !response.isSuccessful || response.body() == null) {
+    suspend fun searchVenues(lat: Double, long: Double, categoryId:String, radius:Int, limit: Int): VenueSearchResult {
+            val response = venueService.searchVenues("$lat,$long", categoryId, radius, limit)
+            return if (!response.isSuccessful || response.body() == null) {
                 VenueSearchResult.Failure
             } else {
                 VenueSearchResult.Success((response.body() as Venues).list)
             }
-        } catch (e: IOException) {
-            VenueSearchResult.Failure
-        }
     }
 
     fun fetchVenueDetails(venueId: String): VenueDetailsResult {
-
         return try {
             val response = venueService.getVenueDetails(venueId).execute()
             if (response == null || !response.isSuccessful || response.body() == null) {

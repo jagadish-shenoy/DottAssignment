@@ -1,10 +1,9 @@
 package com.dott.foursquare
-
 /**
  * Represents a Venue for the Search result
  */
 
-data class Venue(val id: String, val name: String, val address: String)
+data class Venue(val id: String, val name: String, val latitude:Double, val longitude:Double)
 
 /**
  * Wrapper class for List<Venue> - to simplify JSON parsing

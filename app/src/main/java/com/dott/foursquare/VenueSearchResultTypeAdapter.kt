@@ -1,11 +1,8 @@
-package com.dott.foursquare
+package foursquare
 
-import com.dott.foursquare.Venue
-import com.dott.foursquare.Venues
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
-import com.google.gson.JsonObject
 import java.lang.reflect.Type
 
 /**
@@ -25,18 +22,15 @@ class VenueSearchResultTypeAdapter : JsonDeserializer<Venues> {
 
         return Venues(venuesJson.map {
             val venueJson = it.asJsonObject
+            val locationJson = venueJson.get("location").asJsonObject
 
-            Venue(venueJson.get("id").asString,
-                    venueJson.get("name").asString,
-                    extractAddressFromLocation(venueJson.get("location").asJsonObject))
+
+            Venue(
+                venueJson.get("id").asString,
+                venueJson.get("name").asString,
+                locationJson.get("lat").asDouble,
+                locationJson.get("lng").asDouble
+            )
         }.toList())
     }
-
-    private fun extractAddressFromLocation(venueJson: JsonObject?) =
-            venueJson?.let {
-                val formattedAddress = it.get("formattedAddress").asJsonArray
-                formattedAddress?.joinToString(separator = "\n") {
-                    it.asString
-                } ?: "N/A"
-            } ?: "N/A"
 }
