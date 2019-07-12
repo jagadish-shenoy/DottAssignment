@@ -13,17 +13,43 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "FSQUARE_CLIENT_ID", "\"52VMXNUZ1ESD3TJFZEVBCI1XC2N1XFCJZPEYZM4KJARAXEQ2\""
+        buildConfigField "String", "FSQUARE_CLIENT_SECRET", "\"DF5GDG0KXYZZAMXRGXG45W4SYDM0IDLOHVBYSQDXEO3RXNOM\""
+        buildConfigField "String", "FSQUARE_API_VERSION", "\"20180323\""
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     implementation 'androidx.appcompat:appcompat:1.0.0'
+
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+
     implementation 'org.koin:koin-android:2.0.1'
+    implementation 'org.koin:koin-android-viewmodel:2.0.1'
+
     testImplementation 'junit:junit:4.12'
+
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+
+    // ViewModel and LiveData
+    def lifecycle_version = '2.0.0-beta01'
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha01"
+    testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.13.1'
 }

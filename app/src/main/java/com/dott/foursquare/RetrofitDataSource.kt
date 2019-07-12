@@ -1,4 +1,4 @@
-package foursquare
+package com.dott.foursquare
 
 import com.dott.assignment.BuildConfig
 import com.google.gson.GsonBuilder

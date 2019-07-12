@@ -1,4 +1,4 @@
-package foursquare
+package com.dott.foursquare
 
 import org.koin.dsl.module
 

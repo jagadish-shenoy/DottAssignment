@@ -1,9 +1,9 @@
 package com.dott.assignment
 
-import android.location.Location
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.dott.foursquare.Venue
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -11,8 +11,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_maps.*
 import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
-
+import org.koin.android.viewmodel.ext.android.viewModel
+import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsActivity : AppCompatActivity(),
     OnMapReadyCallback {
@@ -21,7 +21,7 @@ class MapsActivity : AppCompatActivity(),
 
     private val locationPermissionHelper: LocationPermissionHelper by inject()
 
-    private val locationHelper: LocationHelper by inject{ parametersOf(this)}
+    private val foursquareViewModel:FoursquareViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,16 +51,21 @@ class MapsActivity : AppCompatActivity(),
     }
 
     private fun updateDeviceLocationOnMap() {
-        locationHelper.currentLocationLiveData.observe(this,
-            Observer<Location> {
-                googleMap.moveCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                        LatLng(
-                            it.latitude,
-                            it.longitude
-                        ), 14.0f
+        foursquareViewModel.venuesLiveData.observe(this,
+            Observer<List<Venue>> {
+                it.forEach { venue ->
+                    val latLng = LatLng(venue.latitude, venue.longitude)
+                    googleMap.addMarker(
+                        MarkerOptions().position(latLng)
+                            .title(venue.name)
                     )
-                )
+
+                    googleMap.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            latLng, 14.0f
+                        )
+                    )
+                }
             })
     }
 }

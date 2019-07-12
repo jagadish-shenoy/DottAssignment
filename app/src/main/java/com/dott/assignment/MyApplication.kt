@@ -1,12 +1,12 @@
 package com.dott.assignment
 
-import android.app.Activity
 import android.app.Application
+import com.dott.foursquare.foursquareModule
 import com.google.android.gms.location.FusedLocationProviderClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
-import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 class MyApplication:Application() {
@@ -17,9 +17,11 @@ class MyApplication:Application() {
             LocationPermissionHelper(androidContext())
         }
 
-        factory { (activity: Activity) ->  FusedLocationProviderClient(activity) }
+        factory { FusedLocationProviderClient(androidContext()) }
 
-        factory { (activity: Activity) -> LocationHelper(get { parametersOf(activity)}) }
+        factory { LocationHelper(get()) }
+
+        viewModel { FoursquareViewModel(get(), get()) }
 
     }
 
@@ -28,7 +30,7 @@ class MyApplication:Application() {
         startKoin {
             androidLogger()
             androidContext(this@MyApplication)
-            modules(appModule)
+            modules(listOf(appModule, foursquareModule))
         }
     }
 }

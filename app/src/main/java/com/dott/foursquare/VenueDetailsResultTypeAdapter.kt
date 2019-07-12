@@ -1,4 +1,4 @@
-package foursquare
+package com.dott.foursquare
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer

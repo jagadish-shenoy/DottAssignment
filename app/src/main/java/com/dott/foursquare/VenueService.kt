@@ -1,4 +1,4 @@
-package foursquare
+package com.dott.foursquare
 
 import retrofit2.Call
 import retrofit2.Response
