@@ -1,10 +1,9 @@
 package com.dott.assignment
 
+import android.location.Location
 import android.os.Bundle
-import android.os.Looper
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.location.*
+import androidx.lifecycle.Observer
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -20,9 +19,9 @@ class MapsActivity : AppCompatActivity(),
 
     private lateinit var googleMap: GoogleMap
 
-    private val fusedLocationProviderClient: FusedLocationProviderClient by inject { parametersOf(this) }
-
     private val locationPermissionHelper: LocationPermissionHelper by inject()
+
+    private val locationHelper: LocationHelper by inject{ parametersOf(this)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,32 +51,16 @@ class MapsActivity : AppCompatActivity(),
     }
 
     private fun updateDeviceLocationOnMap() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
-        try {
-            val locationRequest = LocationRequest.create()
-            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            fusedLocationProviderClient.requestLocationUpdates(
-                locationRequest,
-                object : LocationCallback() {
-                    override fun onLocationResult(result: LocationResult) {
-                        result.locations.firstOrNull()?.apply {
-                            googleMap.moveCamera(
-                                CameraUpdateFactory.newLatLngZoom(
-                                    LatLng(
-                                        latitude,
-                                        longitude
-                                    ), 14.0f
-                                )
-                            )
-                        }
-                    }
-                }, Looper.getMainLooper()
-            )
-        } catch (e: SecurityException) {
-            Log.e("Exception: %s", e.message)
-        }
+        locationHelper.currentLocationLiveData.observe(this,
+            Observer<Location> {
+                googleMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(
+                            it.latitude,
+                            it.longitude
+                        ), 14.0f
+                    )
+                )
+            })
     }
 }
