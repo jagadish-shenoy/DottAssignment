@@ -1,9 +1,12 @@
 package com.dott.assignment
 
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.dott.foursquare.Venue
+import com.dott.location.LocationPermissionHelper
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -48,7 +51,28 @@ class MapsActivity : AppCompatActivity(),
                 requestPermission(this@MapsActivity)
             }
         }
+
+
+        googleMap.setOnCameraIdleListener(object:GoogleMap.OnCameraIdleListener {
+
+            private var lastCenter:LatLng? = null
+
+            override fun onCameraIdle() {
+                val currentCenter = googleMap.cameraPosition.target
+                if(lastCenter != null && currentCenter.distanceTo(lastCenter!!) > 200.0f) {
+                    Log.i("PAN", "Map panned more than 200 meters")
+                }
+                lastCenter = currentCenter
+            }
+        })
     }
+
+    fun LatLng.distanceTo(otherLatLng:LatLng):Float {
+        val result = FloatArray(3)
+        Location.distanceBetween(latitude, longitude, otherLatLng.latitude, otherLatLng.longitude, result)
+        return result[0]
+    }
+
 
     private fun updateDeviceLocationOnMap() {
         foursquareViewModel.venuesLiveData.observe(this,

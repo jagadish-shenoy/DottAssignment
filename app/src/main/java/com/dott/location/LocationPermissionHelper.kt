@@ -1,4 +1,4 @@
-package com.dott.assignment
+package com.dott.location
 
 import android.app.Activity
 import android.content.Context

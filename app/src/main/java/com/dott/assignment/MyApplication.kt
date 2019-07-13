@@ -2,6 +2,8 @@ package com.dott.assignment
 
 import android.app.Application
 import com.dott.foursquare.foursquareModule
+import com.dott.location.GpsLocationSource
+import com.dott.location.LocationPermissionHelper
 import com.google.android.gms.location.FusedLocationProviderClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -19,7 +21,7 @@ class MyApplication:Application() {
 
         factory { FusedLocationProviderClient(androidContext()) }
 
-        factory { LocationHelper(get()) }
+        factory { GpsLocationSource(get()) }
 
         viewModel { FoursquareViewModel(get(), get()) }
 

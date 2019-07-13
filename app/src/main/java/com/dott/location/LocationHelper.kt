@@ -1,0 +1,41 @@
+package com.dott.location
+
+import android.os.Looper
+import android.util.Log
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.location.LocationCallback as GoogleLocationCallback
+
+class GpsLocationSource(private val fusedLocationProviderClient: FusedLocationProviderClient) : LocationSource() {
+
+    override fun onActive() {
+        requestCurrentLocation()
+    }
+
+    override fun onInActive() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    }
+
+    private val locationCallback = object : GoogleLocationCallback() {
+        override fun onLocationResult(result: LocationResult) {
+            result.locations.firstOrNull()?.apply {
+                _locationCallback?.onNewLocation(LatLng(latitude, longitude))
+            }
+        }
+    }
+
+    private fun requestCurrentLocation() {
+        try {
+            val locationRequest = LocationRequest.create()
+            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            fusedLocationProviderClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback, Looper.getMainLooper()
+            )
+        } catch (e: SecurityException) {
+            Log.e("Exception: %s", e.message)
+        }
+    }
+}

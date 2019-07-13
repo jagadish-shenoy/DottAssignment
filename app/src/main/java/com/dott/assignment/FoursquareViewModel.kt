@@ -1,13 +1,15 @@
 package com.dott.assignment
 
-import android.location.Location
 import androidx.lifecycle.*
 import com.dott.foursquare.RetrofitDataSource
 import com.dott.foursquare.Venue
 import com.dott.foursquare.VenueSearchResult
+import com.dott.location.GpsLocationSource
+import com.dott.location.LocationSource
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
-class FoursquareViewModel(private val locationHelper: LocationHelper,
+class FoursquareViewModel(private val gpsLocationSource: GpsLocationSource,
                           private val retrofitDataSource: RetrofitDataSource):ViewModel() {
 
     companion object {
@@ -19,22 +21,23 @@ class FoursquareViewModel(private val locationHelper: LocationHelper,
         const val LIMIT = 20
     }
 
-    private val observer:Observer<Location> = Observer {
-        viewModelScope.launch {
+    private val locationCallback = object :LocationSource.LocationCallback {
+        override fun onNewLocation(latLng: LatLng) {
+            viewModelScope.launch {
 
-            @Suppress("MoveVariableDeclarationIntoWhen")
-            val venueSearchResult = retrofitDataSource.searchVenues(it.latitude,
-                it.longitude,
-                FOURSQUARE_CATEGORY_ID,
-                SEARCH_RADIUS,
-                LIMIT)
+                @Suppress("MoveVariableDeclarationIntoWhen")
+                val venueSearchResult = retrofitDataSource.searchVenues(latLng.latitude,
+                    latLng.longitude,
+                    FOURSQUARE_CATEGORY_ID,
+                    SEARCH_RADIUS,
+                    LIMIT)
 
-            when(venueSearchResult) {
-                is VenueSearchResult.Success -> {
-                    _venuesLiveData.postValue(venueSearchResult.venues)
+                when(venueSearchResult) {
+                    is VenueSearchResult.Success -> {
+                        _venuesLiveData.postValue(venueSearchResult.venues)
+                    }
+                    is VenueSearchResult.Failure -> {}
                 }
-
-                is VenueSearchResult.Failure -> {}
             }
         }
     }
@@ -42,12 +45,12 @@ class FoursquareViewModel(private val locationHelper: LocationHelper,
     private val _venuesLiveData: MutableLiveData<List<Venue>> = object: MutableLiveData<List<Venue>>() {
         override fun onActive() {
             super.onActive()
-            locationHelper.currentLocationLiveData.observeForever(observer)
+            gpsLocationSource._locationCallback = locationCallback
         }
 
         override fun onInactive() {
             super.onInactive()
-            locationHelper.currentLocationLiveData.removeObserver(observer)
+            gpsLocationSource._locationCallback = null
         }
     }
 
