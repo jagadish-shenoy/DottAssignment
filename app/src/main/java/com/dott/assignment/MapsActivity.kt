@@ -1,12 +1,12 @@
 package com.dott.assignment
 
-import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.dott.foursquare.Venue
+import com.dott.location.GpsLocationSource
 import com.dott.location.LocationPermissionHelper
+import com.dott.location.MapPanLocationSource
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_maps.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import com.google.android.gms.maps.model.MarkerOptions
+import org.koin.android.ext.android.getKoin
 
 class MapsActivity : AppCompatActivity(),
     OnMapReadyCallback {
@@ -25,6 +26,8 @@ class MapsActivity : AppCompatActivity(),
     private val locationPermissionHelper: LocationPermissionHelper by inject()
 
     private val foursquareViewModel:FoursquareViewModel by viewModel()
+
+    private var isCameraAlignmentNeeded = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +47,7 @@ class MapsActivity : AppCompatActivity(),
 
     override fun onMapReady(_googleMap: GoogleMap) {
         googleMap = _googleMap
+        googleMap.moveCamera(CameraUpdateFactory.zoomBy(14.0f))
         locationPermissionHelper.apply {
             if(isPermissionGranted()) {
                 updateDeviceLocationOnMap()
@@ -51,44 +55,33 @@ class MapsActivity : AppCompatActivity(),
                 requestPermission(this@MapsActivity)
             }
         }
-
-
-        googleMap.setOnCameraIdleListener(object:GoogleMap.OnCameraIdleListener {
-
-            private var lastCenter:LatLng? = null
-
-            override fun onCameraIdle() {
-                val currentCenter = googleMap.cameraPosition.target
-                if(lastCenter != null && currentCenter.distanceTo(lastCenter!!) > 200.0f) {
-                    Log.i("PAN", "Map panned more than 200 meters")
-                }
-                lastCenter = currentCenter
-            }
-        })
     }
-
-    fun LatLng.distanceTo(otherLatLng:LatLng):Float {
-        val result = FloatArray(3)
-        Location.distanceBetween(latitude, longitude, otherLatLng.latitude, otherLatLng.longitude, result)
-        return result[0]
-    }
-
 
     private fun updateDeviceLocationOnMap() {
+        foursquareViewModel.addLocationSource(getKoin().get<GpsLocationSource>())
+        foursquareViewModel.addLocationSource(MapPanLocationSource(googleMap))
+
         foursquareViewModel.venuesLiveData.observe(this,
             Observer<List<Venue>> {
-                it.forEach { venue ->
-                    val latLng = LatLng(venue.latitude, venue.longitude)
-                    googleMap.addMarker(
-                        MarkerOptions().position(latLng)
-                            .title(venue.name)
-                    )
-
-                    googleMap.moveCamera(
-                        CameraUpdateFactory.newLatLngZoom(
-                            latLng, 14.0f
+                if(it.isNotEmpty()) {
+                    it.forEach { venue ->
+                        val latLng = LatLng(venue.latitude, venue.longitude)
+                        googleMap.addMarker(
+                            MarkerOptions().position(latLng)
+                                .title(venue.name)
                         )
-                    )
+                    }
+
+                    if(isCameraAlignmentNeeded) {
+                        googleMap.moveCamera(
+                            CameraUpdateFactory.newLatLng(
+                                it.first().let { firstVenue ->
+                                    LatLng(firstVenue.latitude, firstVenue.longitude)
+                                }
+                            )
+                        )
+                        isCameraAlignmentNeeded = false
+                    }
                 }
             })
     }

@@ -4,13 +4,11 @@ import androidx.lifecycle.*
 import com.dott.foursquare.RetrofitDataSource
 import com.dott.foursquare.Venue
 import com.dott.foursquare.VenueSearchResult
-import com.dott.location.GpsLocationSource
 import com.dott.location.LocationSource
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
-class FoursquareViewModel(private val gpsLocationSource: GpsLocationSource,
-                          private val retrofitDataSource: RetrofitDataSource):ViewModel() {
+class FoursquareViewModel(private val retrofitDataSource: RetrofitDataSource):ViewModel() {
 
     companion object {
 
@@ -20,6 +18,8 @@ class FoursquareViewModel(private val gpsLocationSource: GpsLocationSource,
 
         const val LIMIT = 20
     }
+
+    private val locationSources = mutableSetOf<LocationSource>()
 
     private val locationCallback = object :LocationSource.LocationCallback {
         override fun onNewLocation(latLng: LatLng) {
@@ -45,15 +45,24 @@ class FoursquareViewModel(private val gpsLocationSource: GpsLocationSource,
     private val _venuesLiveData: MutableLiveData<List<Venue>> = object: MutableLiveData<List<Venue>>() {
         override fun onActive() {
             super.onActive()
-            gpsLocationSource._locationCallback = locationCallback
+            locationSources.forEach { it._locationCallback = locationCallback }
         }
 
         override fun onInactive() {
             super.onInactive()
-            gpsLocationSource._locationCallback = null
+            locationSources.forEach { it._locationCallback = null }
         }
     }
 
     val venuesLiveData:LiveData<List<Venue>>
     get() = _venuesLiveData
+
+    fun addLocationSource(locationSource: LocationSource) {
+        locationSources.add(locationSource)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        locationSources.clear()
+    }
 }

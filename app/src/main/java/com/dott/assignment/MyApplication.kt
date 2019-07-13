@@ -23,7 +23,7 @@ class MyApplication:Application() {
 
         factory { GpsLocationSource(get()) }
 
-        viewModel { FoursquareViewModel(get(), get()) }
+        viewModel { FoursquareViewModel(get()) }
 
     }
 
