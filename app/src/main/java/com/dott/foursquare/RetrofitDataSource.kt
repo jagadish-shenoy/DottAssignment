@@ -5,12 +5,8 @@ import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-/**
- * [DataSource] which fetches the Venue Details from Network
- */
 class RetrofitDataSource {
 
     private val venueService: VenueService = createVenueService()
@@ -36,13 +32,13 @@ class RetrofitDataSource {
     private fun createVenueService(): VenueService {
         val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL_FOURSQUARE)
-                .addConverterFactory(createGsonConverter())
+                .addConverterFactory(createGSONConverter())
                 .client(createClientWithDefaultParams())
                 .build()
         return retrofit.create(VenueService::class.java)
     }
 
-    private fun createGsonConverter() = GsonConverterFactory.create(GsonBuilder()
+    private fun createGSONConverter() = GsonConverterFactory.create(GsonBuilder()
             .registerTypeAdapter(Venues::class.java, VenueSearchResultTypeAdapter())
             .registerTypeAdapter(VenueDetails::class.java, VenueDetailsResultTypeAdapter())
             .create())

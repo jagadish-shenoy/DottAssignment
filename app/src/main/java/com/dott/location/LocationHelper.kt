@@ -15,13 +15,13 @@ class GpsLocationSource(private val fusedLocationProviderClient: FusedLocationPr
     }
 
     override fun onInActive() {
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+        fusedLocationProviderClient.removeLocationUpdates(callback)
     }
 
-    private val locationCallback = object : GoogleLocationCallback() {
+    private val callback = object : GoogleLocationCallback() {
         override fun onLocationResult(result: LocationResult) {
             result.locations.firstOrNull()?.apply {
-                _locationCallback?.onNewLocation(LatLng(latitude, longitude))
+                locationCallback?.onNewLocation(LatLng(latitude, longitude))
             }
         }
     }
@@ -32,7 +32,7 @@ class GpsLocationSource(private val fusedLocationProviderClient: FusedLocationPr
             locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             fusedLocationProviderClient.requestLocationUpdates(
                 locationRequest,
-                locationCallback, Looper.getMainLooper()
+                callback, Looper.getMainLooper()
             )
         } catch (e: SecurityException) {
             Log.e("Exception: %s", e.message)

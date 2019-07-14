@@ -12,9 +12,9 @@ abstract class LocationSource {
 
     protected abstract fun onInActive()
 
-    var _locationCallback:LocationCallback? = null
+    var locationCallback:LocationCallback? = null
     set(value) {
-        val lastCallback = _locationCallback
+        val lastCallback = locationCallback
         field = value
         if(value == null) {
             onInActive()

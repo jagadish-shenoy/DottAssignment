@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
-import android.widget.FrameLayout
 import androidx.annotation.StringRes
 import androidx.cardview.widget.CardView
 import kotlinx.android.synthetic.main.layout_details_card.view.*
@@ -29,9 +28,9 @@ class DetailsCard: CardView {
 
     private fun initView() {
         // Set the CardView layoutParams
-        val layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT)
+        val layoutParams = LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT)
 
         layoutParams.setMargins(0, getDimensionInPixel(4f),0, getDimensionInPixel(4f))
 
@@ -47,7 +46,7 @@ class DetailsCard: CardView {
         setTitle(resources.getString(titleResource))
     }
 
-    fun setTitle(titleText:String) {
+    private fun setTitle(titleText:String) {
         title.text = titleText
     }
 

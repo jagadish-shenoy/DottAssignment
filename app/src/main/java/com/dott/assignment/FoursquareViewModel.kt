@@ -43,12 +43,12 @@ class FoursquareViewModel(private val retrofitDataSource: RetrofitDataSource):Vi
     private val _venuesLiveData: MutableLiveData<List<Venue>> = object: MutableLiveData<List<Venue>>() {
         override fun onActive() {
             super.onActive()
-            locationSources.forEach { it._locationCallback = locationCallback }
+            locationSources.forEach { it.locationCallback = locationCallback }
         }
 
         override fun onInactive() {
             super.onInactive()
-            locationSources.forEach { it._locationCallback = null }
+            locationSources.forEach { it.locationCallback = null }
         }
     }
 
@@ -66,6 +66,7 @@ class FoursquareViewModel(private val retrofitDataSource: RetrofitDataSource):Vi
 
     fun fetchVenueDetails(venueId:String) {
         viewModelScope.launch {
+            @Suppress("MoveVariableDeclarationIntoWhen")
             val venueDetailsResult = retrofitDataSource.fetchVenueDetails(venueId)
             when(venueDetailsResult) {
                 is VenueDetailsResult.Success -> _venueDetailsLiveData.postValue(venueDetailsResult.venueDetails)
