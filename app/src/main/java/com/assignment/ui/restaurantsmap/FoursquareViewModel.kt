@@ -20,10 +20,10 @@ import kotlinx.coroutines.launch
  */
 class FoursquareViewModel(private val foursquareDataSource: FoursquareDataSource):ViewModel() {
 
-    val restaurantsLiveData:LiveData<List<Venue>>
+    val restaurantsLiveData:LiveData<VenueSearchResult>
         get() = _restaurantsLiveData
 
-    val restaurantDetailsLiveData:LiveData<VenueDetails>
+    val restaurantDetailsLiveData:LiveData<VenueDetailsResult>
         get() = _restaurantDetailsLiveData
 
     companion object {
@@ -41,10 +41,7 @@ class FoursquareViewModel(private val foursquareDataSource: FoursquareDataSource
         viewModelScope.launch {
             @Suppress("MoveVariableDeclarationIntoWhen")
             val venueDetailsResult = foursquareDataSource.fetchRestaurantDetails(venueId)
-            when(venueDetailsResult) {
-                is VenueDetailsResult.Success -> _restaurantDetailsLiveData.postValue(venueDetailsResult.venueDetails)
-                is VenueDetailsResult.Failure -> {}
-            }
+            _restaurantDetailsLiveData.postValue(venueDetailsResult)
         }
     }
 
@@ -52,9 +49,9 @@ class FoursquareViewModel(private val foursquareDataSource: FoursquareDataSource
 
     private val locationSources = mutableSetOf<LocationSource>()
 
-    private val _restaurantDetailsLiveData = SingleLiveEvent<VenueDetails>()
+    private val _restaurantDetailsLiveData = SingleLiveEvent<VenueDetailsResult>()
 
-    private val _restaurantsLiveData: MutableLiveData<List<Venue>> = object: MutableLiveData<List<Venue>>() {
+    private val _restaurantsLiveData: MutableLiveData<VenueSearchResult> = object: MutableLiveData<VenueSearchResult>() {
         override fun onActive() {
             super.onActive()
             //Listen for new location when the live data is observed
@@ -70,20 +67,12 @@ class FoursquareViewModel(private val foursquareDataSource: FoursquareDataSource
     private val locationCallback = object :LocationSource.LocationCallback {
         override fun onNewLocation(latLng: LatLng) {
             viewModelScope.launch {
-
-                @Suppress("MoveVariableDeclarationIntoWhen")
                 val venueSearchResult = foursquareDataSource.searchRestaurants(latLng.latitude,
                     latLng.longitude,
                     SEARCH_RADIUS,
                     LIMIT
                 )
-
-                when(venueSearchResult) {
-                    is VenueSearchResult.Success -> {
-                        _restaurantsLiveData.postValue(venueSearchResult.venues)
-                    }
-                    is VenueSearchResult.Failure -> {}
-                }
+                _restaurantsLiveData.postValue(venueSearchResult)
             }
         }
     }

@@ -11,4 +11,8 @@
     <string name="rating">Rating</string>
 
     <string name="info_not_available">N/A</string>
+
+    <string name="error_finding_restaurants">Error finding restaurants</string>
+
+    <string name="error_finding_restaurant_details">Restaurant details could not be fetched!</string>
 </resources>

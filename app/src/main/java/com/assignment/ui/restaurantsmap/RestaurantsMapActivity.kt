@@ -6,7 +6,8 @@ import androidx.lifecycle.Observer
 import com.assignment.ui.R
 import com.assignment.ui.restaurantdetails.VenueDetailsActivity
 import com.assignment.foursquare.Venue
-import com.assignment.foursquare.VenueDetails
+import com.assignment.foursquare.VenueDetailsResult
+import com.assignment.foursquare.VenueSearchResult
 import com.assignment.location.GpsLocationSource
 import com.assignment.location.LocationPermissionHelper
 import com.assignment.location.MapPanLocationSource
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_maps.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.getKoin
 
 class RestaurantsMapActivity : AppCompatActivity(),
@@ -55,10 +57,6 @@ class RestaurantsMapActivity : AppCompatActivity(),
     override fun onMapReady(_googleMap: GoogleMap) {
         googleMap = _googleMap
         googleMap.moveCamera(CameraUpdateFactory.zoomBy(DEFAULT_MAP_ZOOM_LEVEL))
-
-        googleMap.setOnInfoWindowClickListener {
-            foursquareViewModel.fetchRestaurantDetails((it.tag as Venue).id)
-        }
         locationPermissionHelper.apply {
             if (isPermissionGranted()) {
                 prepareToHandleVenueDetails()
@@ -74,35 +72,54 @@ class RestaurantsMapActivity : AppCompatActivity(),
         foursquareViewModel.addLocationSource(MapPanLocationSource(googleMap))
 
         foursquareViewModel.restaurantsLiveData.observe(this,
-            Observer<List<Venue>> {
-                if (it.isNotEmpty()) {
-                    it.forEach { venue ->
-                        val latLng = LatLng(venue.latitude, venue.longitude)
-                        val marker = googleMap.addMarker(
-                            MarkerOptions().position(latLng)
-                                .title(venue.name)
-                        )
-                        marker.tag = venue
-                    }
 
-                    if (isCameraAlignmentNeeded) {
-                        googleMap.moveCamera(
-                            CameraUpdateFactory.newLatLng(
-                                it.first().let { firstVenue ->
-                                    LatLng(firstVenue.latitude, firstVenue.longitude)
-                                }
-                            )
-                        )
-                        isCameraAlignmentNeeded = false
-                    }
+            Observer<VenueSearchResult> {
+                when(it) {
+                    is VenueSearchResult.Failure -> handleErrorFindingRestaurants()
+                    is VenueSearchResult.Success -> handleRestaurantsFound(it.venues)
                 }
             })
     }
 
+    private fun handleErrorFindingRestaurants() {
+        Snackbar.make(findViewById(android.R.id.content), R.string.error_finding_restaurants, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun handleRestaurantsFound(venues:List<Venue>) {
+        if (venues.isNotEmpty()) {
+            venues.forEach { venue ->
+                val latLng = LatLng(venue.latitude, venue.longitude)
+                val marker = googleMap.addMarker(
+                    MarkerOptions().position(latLng)
+                        .title(venue.name)
+                )
+                marker.tag = venue
+            }
+
+            if (isCameraAlignmentNeeded) {
+                googleMap.moveCamera(
+                    CameraUpdateFactory.newLatLng(
+                        venues.first().let { firstVenue ->
+                            LatLng(firstVenue.latitude, firstVenue.longitude)
+                        }
+                    )
+                )
+                isCameraAlignmentNeeded = false
+            }
+        }
+    }
+
     private fun prepareToHandleVenueDetails() {
+        googleMap.setOnInfoWindowClickListener {
+            foursquareViewModel.fetchRestaurantDetails((it.tag as Venue).id)
+        }
+
         foursquareViewModel.restaurantDetailsLiveData.observe(this,
-            Observer<VenueDetails> {
-                VenueDetailsActivity.start(it, this)
+            Observer<VenueDetailsResult> {
+                when(it) {
+                    is VenueDetailsResult.Success -> VenueDetailsActivity.start(it.venueDetails, this)
+                    is VenueDetailsResult.Failure -> Snackbar.make(findViewById(android.R.id.content), R.string.error_finding_restaurant_details, Snackbar.LENGTH_LONG).show()
+                }
             })
     }
 }
