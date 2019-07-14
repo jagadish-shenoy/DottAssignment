@@ -8,6 +8,9 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.location.LocationCallback as GoogleLocationCallback
 
+/**
+ * [LocationSource] to fetch device location using sensor fusion.
+ */
 class GpsLocationSource(private val fusedLocationProviderClient: FusedLocationProviderClient) : LocationSource() {
 
     override fun onActive() {

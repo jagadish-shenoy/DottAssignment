@@ -6,6 +6,11 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
+/**
+ * Helper class to check if the location permission has been granted, if not request for it.
+ *
+ * This class helps keep the clutter out of [Activity] implementation.
+ */
 class LocationPermissionHelper(private val context: Context) {
 
     companion object {

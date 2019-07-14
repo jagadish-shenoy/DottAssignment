@@ -53,7 +53,7 @@ class RestaurantsMapActivity : AppCompatActivity(),
         googleMap.moveCamera(CameraUpdateFactory.zoomBy(14.0f))
 
         googleMap.setOnInfoWindowClickListener {
-            foursquareViewModel.fetchVenueDetails((it.tag as Venue).id)
+            foursquareViewModel.fetchRestaurantDetails((it.tag as Venue).id)
         }
         locationPermissionHelper.apply {
             if(isPermissionGranted()) {
@@ -69,7 +69,7 @@ class RestaurantsMapActivity : AppCompatActivity(),
         foursquareViewModel.addLocationSource(getKoin().get<GpsLocationSource>())
         foursquareViewModel.addLocationSource(MapPanLocationSource(googleMap))
 
-        foursquareViewModel.venuesLiveData.observe(this,
+        foursquareViewModel.restaurantsLiveData.observe(this,
             Observer<List<Venue>> {
                 if(it.isNotEmpty()) {
                     it.forEach { venue ->
@@ -96,7 +96,7 @@ class RestaurantsMapActivity : AppCompatActivity(),
     }
 
     private fun observerVenueDetials() {
-        foursquareViewModel.venueDetailsLiveData.observe(this,
+        foursquareViewModel.restaurantDetailsLiveData.observe(this,
             Observer<VenueDetails> {
                 VenueDetailsActivity.start(it, this)
             })

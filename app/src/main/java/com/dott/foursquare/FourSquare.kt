@@ -37,7 +37,7 @@ data class VenueDetails(val id:String,
                         val rating: String) : Parcelable
 
 /**
- * Wrapper for API result carries status + data for Venue search
+ * Wrapper for venue Search API result
  */
 sealed class VenueSearchResult {
 
@@ -46,6 +46,9 @@ sealed class VenueSearchResult {
     object Failure: VenueSearchResult()
 }
 
+/**
+ * Wrapper for venue details API result
+ */
 sealed class VenueDetailsResult {
 
     class Success(val venueDetails: VenueDetails): VenueDetailsResult()
