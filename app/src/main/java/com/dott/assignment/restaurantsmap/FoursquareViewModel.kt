@@ -1,4 +1,4 @@
-package com.dott.assignment
+package com.dott.assignment.restaurantsmap
 
 import androidx.lifecycle.*
 import com.dott.foursquare.*
@@ -25,7 +25,8 @@ class FoursquareViewModel(private val foursquareDataSource: FoursquareDataSource
                 val venueSearchResult = foursquareDataSource.searchRestaurants(latLng.latitude,
                     latLng.longitude,
                     SEARCH_RADIUS,
-                    LIMIT)
+                    LIMIT
+                )
 
                 when(venueSearchResult) {
                     is VenueSearchResult.Success -> {

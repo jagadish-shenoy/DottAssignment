@@ -1,6 +1,7 @@
 package com.dott.assignment
 
 import android.app.Application
+import com.dott.assignment.restaurantsmap.FoursquareViewModel
 import com.dott.foursquare.foursquareModule
 import com.dott.location.GpsLocationSource
 import com.dott.location.LocationPermissionHelper

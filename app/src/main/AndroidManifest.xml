@@ -23,7 +23,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".restaurantsmap.RestaurantsMapActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,6 +32,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".VenueDetailsActivity" />
+        <activity android:name=".restaurantdetails.VenueDetailsActivity" />
     </application>
 </manifest>

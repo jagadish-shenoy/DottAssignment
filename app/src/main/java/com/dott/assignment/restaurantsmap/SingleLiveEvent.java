@@ -1,4 +1,4 @@
-package com.dott.assignment;
+package com.dott.assignment.restaurantsmap;
 
 /*
  *  Copyright 2017 Google Inc.

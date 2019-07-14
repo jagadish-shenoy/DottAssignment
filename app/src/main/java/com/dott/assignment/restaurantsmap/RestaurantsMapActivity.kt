@@ -1,8 +1,10 @@
-package com.dott.assignment
+package com.dott.assignment.restaurantsmap
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.dott.assignment.R
+import com.dott.assignment.restaurantdetails.VenueDetailsActivity
 import com.dott.foursquare.Venue
 import com.dott.foursquare.VenueDetails
 import com.dott.location.GpsLocationSource
@@ -19,14 +21,14 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import com.google.android.gms.maps.model.MarkerOptions
 import org.koin.android.ext.android.getKoin
 
-class MapsActivity : AppCompatActivity(),
+class RestaurantsMapActivity : AppCompatActivity(),
     OnMapReadyCallback {
 
     private lateinit var googleMap: GoogleMap
 
     private val locationPermissionHelper: LocationPermissionHelper by inject()
 
-    private val foursquareViewModel:FoursquareViewModel by viewModel()
+    private val foursquareViewModel: FoursquareViewModel by viewModel()
 
     private var isCameraAlignmentNeeded = true
 
@@ -58,7 +60,7 @@ class MapsActivity : AppCompatActivity(),
                 observerVenueDetials()
                 updateDeviceLocationOnMap()
             } else {
-                requestPermission(this@MapsActivity)
+                requestPermission(this@RestaurantsMapActivity)
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.dott.assignment
+package com.dott.assignment.restaurantdetails
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,6 +6,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import androidx.annotation.StringRes
 import androidx.cardview.widget.CardView
+import com.dott.assignment.R
 import kotlinx.android.synthetic.main.layout_details_card.view.*
 
 /**
