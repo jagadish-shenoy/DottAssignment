@@ -1,5 +1,7 @@
 package com.dott.foursquare
 
+import android.content.Context
+import com.dott.assignment.R
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
@@ -9,7 +11,9 @@ import java.lang.reflect.Type
 /**
  * The Forusquare API JSON is heavily nested. JsonDeserializer to rescue.
  */
-class VenueDetailsResultTypeAdapter : JsonDeserializer<VenueDetails> {
+class VenueDetailsResultTypeAdapter(context: Context) : JsonDeserializer<VenueDetails> {
+
+    private val defaultText = context.resources.getString(R.string.info_not_available)
 
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): VenueDetails {
         val fullResponseJson = json.asJsonObject
@@ -33,7 +37,7 @@ class VenueDetailsResultTypeAdapter : JsonDeserializer<VenueDetails> {
 
     private fun JsonObject.getName() = get("name").asString
 
-    private fun JsonObject.getDescription() = get("description")?.asString ?: "N/A"
+    private fun JsonObject.getDescription() = get("description")?.asString ?: defaultText
 
     private fun JsonObject.getPhotoUrl():String {
 
@@ -62,13 +66,12 @@ class VenueDetailsResultTypeAdapter : JsonDeserializer<VenueDetails> {
         return getAsJsonObject("location")
             .getAsJsonArray("formattedAddress")?.asJsonArray?.joinToString(separator = "\n") {
             it.asString
-        }
-            ?: "N/A"
+        }?: defaultText
     }
 
     private fun JsonObject.getPhone():String {
-        return getAsJsonObject("contact")?.get("formattedPhone")?.asString?:"N/A"
+        return getAsJsonObject("contact")?.get("formattedPhone")?.asString?:defaultText
     }
 
-    private fun JsonObject.getRating() = get("rating")?.asString ?: "N/A"
+    private fun JsonObject.getRating() = get("rating")?.asString ?: defaultText
 }

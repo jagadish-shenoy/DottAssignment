@@ -9,4 +9,6 @@
     <string name="address">Address</string>
 
     <string name="rating">Rating</string>
+
+    <string name="info_not_available">N/A</string>
 </resources>
