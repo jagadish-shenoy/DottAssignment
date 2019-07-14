@@ -6,11 +6,9 @@ import com.dott.location.LocationSource
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
-class FoursquareViewModel(private val retrofitDataSource: RetrofitDataSource):ViewModel() {
+class FoursquareViewModel(private val foursquareDataSource: FoursquareDataSource):ViewModel() {
 
     companion object {
-
-        const val FOURSQUARE_CATEGORY_ID = "4d4b7105d754a06374d81259"
 
         const val SEARCH_RADIUS = 250
 
@@ -24,9 +22,8 @@ class FoursquareViewModel(private val retrofitDataSource: RetrofitDataSource):Vi
             viewModelScope.launch {
 
                 @Suppress("MoveVariableDeclarationIntoWhen")
-                val venueSearchResult = retrofitDataSource.searchVenues(latLng.latitude,
+                val venueSearchResult = foursquareDataSource.searchRestaurants(latLng.latitude,
                     latLng.longitude,
-                    FOURSQUARE_CATEGORY_ID,
                     SEARCH_RADIUS,
                     LIMIT)
 
@@ -67,7 +64,7 @@ class FoursquareViewModel(private val retrofitDataSource: RetrofitDataSource):Vi
     fun fetchVenueDetails(venueId:String) {
         viewModelScope.launch {
             @Suppress("MoveVariableDeclarationIntoWhen")
-            val venueDetailsResult = retrofitDataSource.fetchVenueDetails(venueId)
+            val venueDetailsResult = foursquareDataSource.fetchRestaurantDetails(venueId)
             when(venueDetailsResult) {
                 is VenueDetailsResult.Success -> _venueDetailsLiveData.postValue(venueDetailsResult.venueDetails)
                 is VenueDetailsResult.Failure -> {}
