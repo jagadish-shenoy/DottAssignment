@@ -1,4 +1,4 @@
-package com.dott.foursquare
+package com.assignment.foursquare
 
 /**
  * Koin Module for com.dott.foursquare package.

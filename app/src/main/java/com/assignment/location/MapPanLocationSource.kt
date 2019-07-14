@@ -1,4 +1,4 @@
-package com.dott.location
+package com.assignment.location
 
 import android.location.Location
 import com.google.android.gms.maps.GoogleMap

@@ -1,4 +1,4 @@
-package com.dott.foursquare
+package com.assignment.foursquare
 
 import retrofit2.Response
 import retrofit2.http.GET

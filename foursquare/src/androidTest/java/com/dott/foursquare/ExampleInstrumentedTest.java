@@ -1,4 +1,4 @@
-package com.dott.foursquare;
+package com.assignment.foursquare;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;

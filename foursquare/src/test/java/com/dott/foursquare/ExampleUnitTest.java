@@ -1,4 +1,4 @@
-package com.dott.foursquare;
+package com.assignment.foursquare;
 
 import org.junit.Test;
 

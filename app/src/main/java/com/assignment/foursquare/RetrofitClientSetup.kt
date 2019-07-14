@@ -1,7 +1,7 @@
-package com.dott.foursquare
+package com.assignment.foursquare
 
 import android.content.Context
-import com.dott.assignment.BuildConfig
+import com.assignment.ui.BuildConfig
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

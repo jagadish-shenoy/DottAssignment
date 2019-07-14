@@ -1,15 +1,15 @@
-package com.dott.assignment.restaurantsmap
+package com.assignment.ui.restaurantsmap
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.dott.assignment.R
-import com.dott.assignment.restaurantdetails.VenueDetailsActivity
-import com.dott.foursquare.Venue
-import com.dott.foursquare.VenueDetails
-import com.dott.location.GpsLocationSource
-import com.dott.location.LocationPermissionHelper
-import com.dott.location.MapPanLocationSource
+import com.assignment.ui.R
+import com.assignment.ui.restaurantdetails.VenueDetailsActivity
+import com.assignment.foursquare.Venue
+import com.assignment.foursquare.VenueDetails
+import com.assignment.location.GpsLocationSource
+import com.assignment.location.LocationPermissionHelper
+import com.assignment.location.MapPanLocationSource
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback

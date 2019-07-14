@@ -1,4 +1,4 @@
-package com.dott.assignment
+package com.assignment.ui
 
 import org.junit.Test
 

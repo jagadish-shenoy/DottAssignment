@@ -1,4 +1,4 @@
-package com.dott.assignment.restaurantdetails
+package com.assignment.ui.restaurantdetails
 
 import android.content.Context
 import android.content.Intent
@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.dott.assignment.R
-import com.dott.foursquare.VenueDetails
+import com.assignment.ui.R
+import com.assignment.foursquare.VenueDetails
 import kotlinx.android.synthetic.main.activity_venue_details.*
 
 private const val EXTRA_VENUE_DETAILS = "venueDetails"

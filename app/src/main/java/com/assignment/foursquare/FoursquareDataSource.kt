@@ -1,4 +1,4 @@
-package com.dott.foursquare
+package com.assignment.foursquare
 
 class FoursquareDataSource(private val venueService: VenueService) {
 

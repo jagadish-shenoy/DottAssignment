@@ -1,10 +1,10 @@
-package com.dott.assignment
+package com.assignment
 
 import android.app.Application
-import com.dott.assignment.restaurantsmap.FoursquareViewModel
-import com.dott.foursquare.foursquareModule
-import com.dott.location.GpsLocationSource
-import com.dott.location.LocationPermissionHelper
+import com.assignment.ui.restaurantsmap.FoursquareViewModel
+import com.assignment.foursquare.foursquareModule
+import com.assignment.location.GpsLocationSource
+import com.assignment.location.LocationPermissionHelper
 import com.google.android.gms.location.FusedLocationProviderClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

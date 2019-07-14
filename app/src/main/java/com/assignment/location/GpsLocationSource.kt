@@ -1,4 +1,4 @@
-package com.dott.location
+package com.assignment.location
 
 import android.os.Looper
 import android.util.Log

@@ -1,10 +1,7 @@
-package com.dott.foursquare
+package com.assignment.foursquare
 
 import android.os.Parcelable
-import com.dott.assignment.BuildConfig
 import kotlinx.android.parcel.Parcelize
-import okhttp3.OkHttpClient
-import java.util.concurrent.TimeUnit
 
 const val BASE_URL_FOURSQUARE = "https://api.foursquare.com/v2/"
 

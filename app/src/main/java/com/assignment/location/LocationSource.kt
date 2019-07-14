@@ -1,4 +1,4 @@
-package com.dott.location
+package com.assignment.location
 
 import com.google.android.gms.maps.model.LatLng
 

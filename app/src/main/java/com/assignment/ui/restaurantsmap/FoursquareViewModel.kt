@@ -1,8 +1,8 @@
-package com.dott.assignment.restaurantsmap
+package com.assignment.ui.restaurantsmap
 
 import androidx.lifecycle.*
-import com.dott.foursquare.*
-import com.dott.location.LocationSource
+import com.assignment.foursquare.*
+import com.assignment.location.LocationSource
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
