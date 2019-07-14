@@ -56,8 +56,8 @@ class RestaurantsMapActivity : AppCompatActivity(),
             foursquareViewModel.fetchRestaurantDetails((it.tag as Venue).id)
         }
         locationPermissionHelper.apply {
-            if(isPermissionGranted()) {
-                observerVenueDetials()
+            if (isPermissionGranted()) {
+                observerVenueDetails()
                 updateDeviceLocationOnMap()
             } else {
                 requestPermission(this@RestaurantsMapActivity)
@@ -71,7 +71,7 @@ class RestaurantsMapActivity : AppCompatActivity(),
 
         foursquareViewModel.restaurantsLiveData.observe(this,
             Observer<List<Venue>> {
-                if(it.isNotEmpty()) {
+                if (it.isNotEmpty()) {
                     it.forEach { venue ->
                         val latLng = LatLng(venue.latitude, venue.longitude)
                         val marker = googleMap.addMarker(
@@ -81,7 +81,7 @@ class RestaurantsMapActivity : AppCompatActivity(),
                         marker.tag = venue
                     }
 
-                    if(isCameraAlignmentNeeded) {
+                    if (isCameraAlignmentNeeded) {
                         googleMap.moveCamera(
                             CameraUpdateFactory.newLatLng(
                                 it.first().let { firstVenue ->
@@ -95,7 +95,7 @@ class RestaurantsMapActivity : AppCompatActivity(),
             })
     }
 
-    private fun observerVenueDetials() {
+    private fun observerVenueDetails() {
         foursquareViewModel.restaurantDetailsLiveData.observe(this,
             Observer<VenueDetails> {
                 VenueDetailsActivity.start(it, this)
