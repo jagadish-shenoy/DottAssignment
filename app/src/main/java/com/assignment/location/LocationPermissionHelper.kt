@@ -22,6 +22,11 @@ class LocationPermissionHelper(private val context: Context) {
             context,
             android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
 
+    fun isPermissionDenied(activity: Activity) =
+            !ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+
+
     fun requestPermission(activity: Activity) {
         ActivityCompat.requestPermissions(
             activity,

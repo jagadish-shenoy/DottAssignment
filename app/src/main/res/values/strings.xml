@@ -12,6 +12,10 @@
 
     <string name="info_not_available">N/A</string>
 
+    <string name="location_permission_denied">This app needs location permission to function!</string>
+
+    <string name="restart_app_grant_permission">Restart the app and grant permission</string>
+
     <string name="error_finding_restaurants">Error finding restaurants</string>
 
     <string name="error_finding_restaurant_details">Restaurant details could not be fetched!</string>

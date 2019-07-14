@@ -51,6 +51,14 @@ class RestaurantsMapActivity : AppCompatActivity(),
     ) {
         if (locationPermissionHelper.onRequestPermissionsResult(requestCode, grantResults)) {
             prepareToReceiveRestaurants()
+        } else if(locationPermissionHelper.isPermissionDenied(this)) {
+            Snackbar.make(findViewById(android.R.id.content),
+                R.string.location_permission_denied,
+                Snackbar.LENGTH_INDEFINITE).show()
+        } else {
+            Snackbar.make(findViewById(android.R.id.content),
+                R.string.restart_app_grant_permission,
+                Snackbar.LENGTH_INDEFINITE).show()
         }
     }
 
