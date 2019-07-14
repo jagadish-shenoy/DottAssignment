@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">DottAssignment</string>
     <string name="title_activity_maps">Restaurants</string>
+
+    <string name="description">Description</string>
+
+    <string name="contact">Contact</string>
+
+    <string name="address">Address</string>
+
+    <string name="rating">Rating</string>
 </resources>

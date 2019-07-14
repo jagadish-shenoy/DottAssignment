@@ -1,9 +1,7 @@
 package com.dott.assignment
 
 import androidx.lifecycle.*
-import com.dott.foursquare.RetrofitDataSource
-import com.dott.foursquare.Venue
-import com.dott.foursquare.VenueSearchResult
+import com.dott.foursquare.*
 import com.dott.location.LocationSource
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
@@ -57,8 +55,23 @@ class FoursquareViewModel(private val retrofitDataSource: RetrofitDataSource):Vi
     val venuesLiveData:LiveData<List<Venue>>
     get() = _venuesLiveData
 
+    private val _venueDetailsLiveData = SingleLiveEvent<VenueDetails>()
+
+    val venueDetailsLiveData:LiveData<VenueDetails>
+    get() = _venueDetailsLiveData
+
     fun addLocationSource(locationSource: LocationSource) {
         locationSources.add(locationSource)
+    }
+
+    fun fetchVenueDetails(venueId:String) {
+        viewModelScope.launch {
+            val venueDetailsResult = retrofitDataSource.fetchVenueDetails(venueId)
+            when(venueDetailsResult) {
+                is VenueDetailsResult.Success -> _venueDetailsLiveData.postValue(venueDetailsResult.venueDetails)
+                is VenueDetailsResult.Failure -> {}
+            }
+        }
     }
 
     override fun onCleared() {

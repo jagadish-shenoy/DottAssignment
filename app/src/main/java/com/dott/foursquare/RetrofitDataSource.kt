@@ -24,16 +24,12 @@ class RetrofitDataSource {
             }
     }
 
-    fun fetchVenueDetails(venueId: String): VenueDetailsResult {
-        return try {
-            val response = venueService.getVenueDetails(venueId).execute()
-            if (response == null || !response.isSuccessful || response.body() == null) {
-                VenueDetailsResult.Failure
-            } else {
-                VenueDetailsResult.Success(response.body() as VenueDetails)
-            }
-        } catch (e: IOException) {
+    suspend fun fetchVenueDetails(venueId: String): VenueDetailsResult {
+        val response = venueService.getVenueDetails(venueId)
+        return if (!response.isSuccessful || response.body() == null) {
             VenueDetailsResult.Failure
+        } else {
+            VenueDetailsResult.Success(response.body() as VenueDetails)
         }
     }
 

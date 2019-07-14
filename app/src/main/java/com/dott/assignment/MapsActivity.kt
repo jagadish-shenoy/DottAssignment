@@ -1,9 +1,11 @@
 package com.dott.assignment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.dott.foursquare.Venue
+import com.dott.foursquare.VenueDetails
 import com.dott.location.GpsLocationSource
 import com.dott.location.LocationPermissionHelper
 import com.dott.location.MapPanLocationSource
@@ -48,8 +50,13 @@ class MapsActivity : AppCompatActivity(),
     override fun onMapReady(_googleMap: GoogleMap) {
         googleMap = _googleMap
         googleMap.moveCamera(CameraUpdateFactory.zoomBy(14.0f))
+
+        googleMap.setOnInfoWindowClickListener {
+            foursquareViewModel.fetchVenueDetails((it.tag as Venue).id)
+        }
         locationPermissionHelper.apply {
             if(isPermissionGranted()) {
+                observerVenueDetials()
                 updateDeviceLocationOnMap()
             } else {
                 requestPermission(this@MapsActivity)
@@ -66,10 +73,11 @@ class MapsActivity : AppCompatActivity(),
                 if(it.isNotEmpty()) {
                     it.forEach { venue ->
                         val latLng = LatLng(venue.latitude, venue.longitude)
-                        googleMap.addMarker(
+                        val marker = googleMap.addMarker(
                             MarkerOptions().position(latLng)
                                 .title(venue.name)
                         )
+                        marker.tag = venue
                     }
 
                     if(isCameraAlignmentNeeded) {
@@ -83,6 +91,13 @@ class MapsActivity : AppCompatActivity(),
                         isCameraAlignmentNeeded = false
                     }
                 }
+            })
+    }
+
+    private fun observerVenueDetials() {
+        foursquareViewModel.venueDetailsLiveData.observe(this,
+            Observer<VenueDetails> {
+                VenueDetailsActivity.start(it, this)
             })
     }
 }

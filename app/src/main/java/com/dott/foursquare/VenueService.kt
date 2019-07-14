@@ -16,5 +16,5 @@ interface VenueService {
                      @Query("limit") limit: Int): Response<Venues>
 
     @GET("venues/{venue_id}")
-    fun getVenueDetails(@Path("venue_id") venueId: String): Call<VenueDetails>
+    suspend fun getVenueDetails(@Path("venue_id") venueId: String): Response<VenueDetails>
 }
