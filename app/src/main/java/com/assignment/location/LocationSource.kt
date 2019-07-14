@@ -25,9 +25,9 @@ abstract class LocationSource {
     set(value) {
         val lastCallback = locationCallback
         field = value
-        if(value == null) {
+        if(lastCallback != null && value == null) {
             onInActive()
-        } else if(lastCallback == null) {
+        } else if(lastCallback == null && value != null) {
             onActive()
         }
     }

@@ -32,6 +32,10 @@ class RestaurantsMapActivity : AppCompatActivity(),
 
     private var isCameraAlignmentNeeded = true
 
+    companion object {
+        const val DEFAULT_MAP_ZOOM_LEVEL = 14.0f
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
@@ -44,28 +48,28 @@ class RestaurantsMapActivity : AppCompatActivity(),
         grantResults: IntArray
     ) {
         if (locationPermissionHelper.onRequestPermissionsResult(requestCode, grantResults)) {
-            updateDeviceLocationOnMap()
+            prepareToReceiveRestaurants()
         }
     }
 
     override fun onMapReady(_googleMap: GoogleMap) {
         googleMap = _googleMap
-        googleMap.moveCamera(CameraUpdateFactory.zoomBy(14.0f))
+        googleMap.moveCamera(CameraUpdateFactory.zoomBy(DEFAULT_MAP_ZOOM_LEVEL))
 
         googleMap.setOnInfoWindowClickListener {
             foursquareViewModel.fetchRestaurantDetails((it.tag as Venue).id)
         }
         locationPermissionHelper.apply {
             if (isPermissionGranted()) {
-                observerVenueDetails()
-                updateDeviceLocationOnMap()
+                prepareToHandleVenueDetails()
+                prepareToReceiveRestaurants()
             } else {
                 requestPermission(this@RestaurantsMapActivity)
             }
         }
     }
 
-    private fun updateDeviceLocationOnMap() {
+    private fun prepareToReceiveRestaurants() {
         foursquareViewModel.addLocationSource(getKoin().get<GpsLocationSource>())
         foursquareViewModel.addLocationSource(MapPanLocationSource(googleMap))
 
@@ -95,7 +99,7 @@ class RestaurantsMapActivity : AppCompatActivity(),
             })
     }
 
-    private fun observerVenueDetails() {
+    private fun prepareToHandleVenueDetails() {
         foursquareViewModel.restaurantDetailsLiveData.observe(this,
             Observer<VenueDetails> {
                 VenueDetailsActivity.start(it, this)
