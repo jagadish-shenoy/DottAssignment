@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_venue_details.*
 
 private const val EXTRA_VENUE_DETAILS = "venueDetails"
 
-class VenueDetailsActivity : AppCompatActivity() {
+class RestaurantDetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +24,7 @@ class VenueDetailsActivity : AppCompatActivity() {
             if (photoUrl.isEmpty()) {
                 venueImage.visibility = View.GONE
             } else {
-                Glide.with(this@VenueDetailsActivity).load(photoUrl).into(venueImage)
+                Glide.with(this@RestaurantDetailsActivity).load(photoUrl).into(venueImage)
             }
             venueDescriptionCard.setTitle(R.string.description)
             venueDescriptionCard.setDescription(description)
@@ -42,7 +42,7 @@ class VenueDetailsActivity : AppCompatActivity() {
 
     companion object {
         fun start(venueDetails: VenueDetails, context: Context) {
-            val intent = Intent(context, VenueDetailsActivity::class.java)
+            val intent = Intent(context, RestaurantDetailsActivity::class.java)
             intent.putExtra(EXTRA_VENUE_DETAILS, venueDetails)
             context.startActivity(intent)
         }

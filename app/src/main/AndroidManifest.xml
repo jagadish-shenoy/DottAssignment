@@ -32,6 +32,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.assignment.ui.restaurantdetails.VenueDetailsActivity" />
+        <activity android:name="com.assignment.ui.restaurantdetails.RestaurantDetailsActivity" />
     </application>
 </manifest>
