@@ -24,7 +24,8 @@
 
         <activity
             android:name="com.assignment.ui.restaurantsmap.RestaurantsMapActivity"
-            android:label="@string/title_activity_maps">
+            android:label="@string/title_activity_maps"
+        android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,6 +33,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.assignment.ui.restaurantdetails.RestaurantDetailsActivity" />
+        <activity android:name="com.assignment.ui.restaurantdetails.RestaurantDetailsActivity"
+                  android:screenOrientation="portrait"/>
     </application>
 </manifest>
