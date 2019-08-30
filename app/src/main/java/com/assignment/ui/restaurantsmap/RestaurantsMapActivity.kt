@@ -70,7 +70,7 @@ class RestaurantsMapActivity : AppCompatActivity(),
                 prepareToHandleVenueDetails()
                 prepareToReceiveRestaurants()
             } else {
-                requestPermission(this@RestaurantsMapActivity)
+                //requestPermission(this@RestaurantsMapActivity)
             }
         }
     }

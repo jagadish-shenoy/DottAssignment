@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">DottAssignment</string>
+
     <string name="title_activity_maps">Restaurants</string>
 
     <string name="description">Description</string>
@@ -12,6 +13,10 @@
 
     <string name="info_not_available">N/A</string>
 
+    <string name="location_permission_request">We would like to suggest you Restaurants nearby.
+        This is only possible if we could access your current location
+    </string>
+
     <string name="location_permission_denied">This app needs location permission to function!</string>
 
     <string name="restart_app_grant_permission">Restart the app and grant permission</string>
@@ -19,4 +24,6 @@
     <string name="error_finding_restaurants">Error finding restaurants</string>
 
     <string name="error_finding_restaurant_details">Restaurant details could not be fetched!</string>
+
+    <string name="ready_to_grant_permission">I would like to grant permission</string>
 </resources>

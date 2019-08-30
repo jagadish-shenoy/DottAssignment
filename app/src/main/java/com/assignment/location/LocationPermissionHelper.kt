@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 
 /**
  * Helper class to check if the location permission has been granted, if not request for it.
@@ -27,9 +28,8 @@ class LocationPermissionHelper(private val context: Context) {
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
 
 
-    fun requestPermission(activity: Activity) {
-        ActivityCompat.requestPermissions(
-            activity,
+    fun requestPermission(fragment: Fragment) {
+        fragment.requestPermissions(
             arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
             PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
         )
