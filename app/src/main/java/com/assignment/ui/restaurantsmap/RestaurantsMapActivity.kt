@@ -3,11 +3,11 @@ package com.assignment.ui.restaurantsmap
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.assignment.foursquare.FoursquareDataSource
+import com.assignment.foursquare.FoursquareDataSource.VenueSearchResult.*
 import com.assignment.ui.R
 import com.assignment.ui.restaurantdetails.RestaurantDetailsActivity
 import com.assignment.foursquare.Venue
-import com.assignment.foursquare.VenueDetailsResult
-import com.assignment.foursquare.VenueSearchResult
 import com.assignment.location.GpsLocationSource
 import com.assignment.location.LocationPermissionHelper
 import com.assignment.location.MapPanLocationSource
@@ -81,10 +81,10 @@ class RestaurantsMapActivity : AppCompatActivity(),
 
         foursquareViewModel.restaurantsLiveData.observe(this,
 
-            Observer<VenueSearchResult> {
+            Observer<FoursquareDataSource.VenueSearchResult> {
                 when(it) {
-                    is VenueSearchResult.Failure -> handleErrorFindingRestaurants()
-                    is VenueSearchResult.Success -> handleRestaurantsFound(it.venues)
+                    is Failure -> handleErrorFindingRestaurants()
+                    is Success -> handleRestaurantsFound(it.venues)
                 }
             })
     }
@@ -123,10 +123,10 @@ class RestaurantsMapActivity : AppCompatActivity(),
         }
 
         foursquareViewModel.restaurantDetailsLiveData.observe(this,
-            Observer<VenueDetailsResult> {
+            Observer<FoursquareDataSource.VenueDetailsResult> {
                 when(it) {
-                    is VenueDetailsResult.Success -> RestaurantDetailsActivity.start(it.venueDetails, this)
-                    is VenueDetailsResult.Failure -> Snackbar.make(findViewById(android.R.id.content), R.string.error_finding_restaurant_details, Snackbar.LENGTH_LONG).show()
+                    is FoursquareDataSource.VenueDetailsResult.Success -> RestaurantDetailsActivity.start(it.venueDetails, this)
+                    is FoursquareDataSource.VenueDetailsResult.Failure -> Snackbar.make(findViewById(android.R.id.content), R.string.error_finding_restaurant_details, Snackbar.LENGTH_LONG).show()
                 }
             })
     }

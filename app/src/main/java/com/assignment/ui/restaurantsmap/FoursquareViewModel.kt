@@ -2,6 +2,8 @@ package com.assignment.ui.restaurantsmap
 
 import androidx.lifecycle.*
 import com.assignment.foursquare.*
+import com.assignment.foursquare.FoursquareDataSource.VenueDetailsResult
+import com.assignment.foursquare.FoursquareDataSource.VenueSearchResult
 import com.assignment.location.LocationSource
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
