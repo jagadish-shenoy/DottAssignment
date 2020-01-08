@@ -28,7 +28,7 @@ class RestaurantDetailsFragment : Fragment() {
         showVenueDetails(venueDetails)
     }
 
-    fun showVenueDetails(venueDetails: VenueDetails) {
+    private fun showVenueDetails(venueDetails: VenueDetails) {
         venueDetails.apply {
             requireActivity().title = name
             if (photoUrl.isEmpty()) {

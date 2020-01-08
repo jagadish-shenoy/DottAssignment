@@ -20,8 +20,10 @@ class MapPanLocationSource(private val googleMap:GoogleMap):LocationSource() {
 
         override fun onCameraIdle() {
             val currentCenter = googleMap.cameraPosition.target
-            if(lastCenter != null && currentCenter.distanceTo(lastCenter!!) > thresholdPanDistance) {
-                locationCallback?.onNewLocation(currentCenter)
+            lastCenter?.let { lastCenter ->
+                if (currentCenter.distanceTo(lastCenter) > thresholdPanDistance) {
+                    locationCallback?.onNewLocation(currentCenter)
+                }
             }
             lastCenter = currentCenter
         }
