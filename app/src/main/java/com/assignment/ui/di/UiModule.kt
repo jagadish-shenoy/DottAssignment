@@ -10,7 +10,8 @@ val uiModule = module {
     viewModel {
         RestaurantsViewModel(
             foursquareDataSource = get(),
-            gpsLocationSource = get()
+            locationSource = get(),
+            mapCenterChangeComputer = get()
         )
     }
 
