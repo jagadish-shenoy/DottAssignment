@@ -8,7 +8,7 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
 /**
- * View model for the [RestaurantsMapActivity]
+ * View model for the [RestaurantsMapFragment]
  *
  * The view models listens to new locations provided by [LocationSource]s registered with it.
  * To register a new location source, use the [addLocationSource] API

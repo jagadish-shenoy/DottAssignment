@@ -17,7 +17,7 @@ class RestaurantDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_venue_details)
-        val venueDetails: com.assignment.foursquare.VenueDetails = intent.extras!!.getParcelable(EXTRA_VENUE_DETAILS)!!
+        val venueDetails: VenueDetails = intent.extras!!.getParcelable(EXTRA_VENUE_DETAILS)!!
 
         venueDetails.apply {
             title = name
@@ -41,7 +41,7 @@ class RestaurantDetailsActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun start(venueDetails: com.assignment.foursquare.VenueDetails, context: Context) {
+        fun start(venueDetails: VenueDetails, context: Context) {
             val intent = Intent(context, RestaurantDetailsActivity::class.java)
             intent.putExtra(EXTRA_VENUE_DETAILS, venueDetails)
             context.startActivity(intent)

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.assignment.location.LocationPermissionHelper
-import com.assignment.ui.restaurantsmap.RestaurantsMapActivity
+import com.assignment.ui.restaurantsmap.RestaurantsMapFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_location_permission.*
 import org.koin.android.ext.android.inject
@@ -38,7 +38,7 @@ class LocationPermissionRequestFragment:Fragment() {
     ) {
         when {
             locationPermissionHelper.onRequestPermissionsResult(requestCode, grantResults) ->
-                startActivity(Intent(requireContext(), RestaurantsMapActivity::class.java))
+                startActivity(Intent(requireContext(), RestaurantsMapFragment::class.java))
 
             locationPermissionHelper.isPermissionDenied(requireActivity()) ->
                 Snackbar.make(requireActivity().findViewById(android.R.id.content),
