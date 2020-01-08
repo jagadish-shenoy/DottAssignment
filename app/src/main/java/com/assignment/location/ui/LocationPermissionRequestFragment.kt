@@ -1,4 +1,4 @@
-package com.assignment.ui
+package com.assignment.location.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.assignment.location.LocationPermissionHelper
+import com.assignment.ui.R
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_location_permission.*
 import org.koin.android.ext.android.inject
