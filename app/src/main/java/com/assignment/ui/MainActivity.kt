@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mian)
 
-        if (locationPermissionHelper.isPermissionGranted()) {
+        if (savedInstanceState == null && locationPermissionHelper.isPermissionGranted()) {
             val navHostFragment = nav_host_fragment as NavHostFragment
             val inflater = navHostFragment.navController.navInflater
             val graph = inflater.inflate(R.navigation.nav_graph)
