@@ -30,7 +30,7 @@
                 android:value="@string/google_maps_key"/>
 
         <activity
-                android:name=".restaurantdetails.RestaurantDetailsActivity"
+                android:name=".restaurantdetails.RestaurantDetailsFragment"
                 android:screenOrientation="portrait"/>
     </application>
 
