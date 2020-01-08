@@ -16,11 +16,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_mian)
 
         if (savedInstanceState == null && locationPermissionHelper.isPermissionGranted()) {
-            val navHostFragment = nav_host_fragment as NavHostFragment
-            val inflater = navHostFragment.navController.navInflater
-            val graph = inflater.inflate(R.navigation.nav_graph)
-            graph.startDestination = R.id.restaurantsMapFragment
-            navHostFragment.navController.graph = graph
+            startFromRestaurantsMapScreen()
         }
+    }
+
+    private fun startFromRestaurantsMapScreen() {
+        val navHostFragment = nav_host_fragment as NavHostFragment
+        val inflater = navHostFragment.navController.navInflater
+        val graph = inflater.inflate(R.navigation.nav_graph)
+        graph.startDestination = R.id.restaurantsMapFragment
+        navHostFragment.navController.graph = graph
     }
 }

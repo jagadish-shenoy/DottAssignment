@@ -7,9 +7,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.model.LatLng
 
-class LocationSource(
-    private val fusedLocationProviderClient: FusedLocationProviderClient
-) {
+class LocationSource(private val fusedLocationProviderClient: FusedLocationProviderClient) {
 
     interface LocationCallback {
         fun onNewLocation(latLng:LatLng)

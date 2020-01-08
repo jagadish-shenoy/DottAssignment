@@ -15,9 +15,11 @@
         This is only possible if we could access your current location
     </string>
 
-    <string name="location_permission_denied">This app needs location permission to function!</string>
+    <string name="location_permission_denied">App cannot function without permission!</string>
 
-    <string name="restart_app_grant_permission">Restart the app and grant permission</string>
+    <string name="location_permission_denied_dont_ask">Grant the permission from setting!</string>
+
+    <string name="location_permission_denied_go_to_settings">Settings</string>
 
     <string name="error_finding_restaurants">Error finding restaurants</string>
 

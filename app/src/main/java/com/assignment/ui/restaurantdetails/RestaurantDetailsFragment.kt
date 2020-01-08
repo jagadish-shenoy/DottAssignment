@@ -18,9 +18,7 @@ class RestaurantDetailsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.activity_venue_details, container, false)
-    }
+    ): View = inflater.inflate(R.layout.activity_venue_details, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

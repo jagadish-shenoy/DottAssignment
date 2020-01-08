@@ -1,10 +1,12 @@
 package com.assignment.location.ui
 
+import android.content.Intent
+import android.net.Uri.fromParts
 import android.os.Bundle
+import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -13,6 +15,7 @@ import com.assignment.ui.R
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_location_permission.*
 import org.koin.android.ext.android.inject
+
 
 class LocationPermissionRequestFragment:Fragment() {
 
@@ -29,11 +32,7 @@ class LocationPermissionRequestFragment:Fragment() {
         navController = Navigation.findNavController(view)
 
         ready_to_grant_permission.setOnClickListener {
-            locationPermissionHelper.apply {
-                if(!isPermissionGranted()) {
-                    requestPermission(this@LocationPermissionRequestFragment)
-                }
-            }
+            locationPermissionHelper.requestPermission(this@LocationPermissionRequestFragment)
         }
     }
 
@@ -44,16 +43,33 @@ class LocationPermissionRequestFragment:Fragment() {
     ) {
         when {
             locationPermissionHelper.isPermissionGranted() -> navController.navigate(R.id.action_locationPermissionRequestFragment_to_restaurantsMapFragment)
-            locationPermissionHelper.isPermissionDenied(requireActivity()) -> showError(R.string.location_permission_denied)
-            else -> showError(R.string.restart_app_grant_permission)
+            locationPermissionHelper.isPermissionDeniedAndDontAskAgain(requireActivity()) -> showPermissionDeniedGotoSettingsError()
+            else -> showPermissionDeniedError()
         }
     }
 
-    private fun showError(@StringRes error: Int) {
+    private fun showPermissionDeniedError() {
         Snackbar.make(
             requireActivity().findViewById(android.R.id.content),
-            error,
+            R.string.location_permission_denied,
             Snackbar.LENGTH_INDEFINITE
         ).show()
+    }
+
+    private fun showPermissionDeniedGotoSettingsError() {
+        Snackbar.make(
+            requireActivity().findViewById(android.R.id.content),
+            R.string.location_permission_denied,
+            Snackbar.LENGTH_INDEFINITE
+        ).setAction(R.string.location_permission_denied_go_to_settings) {
+            gotoAppSettings()
+        }.show()
+    }
+
+    private fun gotoAppSettings() {
+        val intent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = fromParts("package", requireActivity().packageName, null)
+        intent.data = uri
+        startActivity(intent)
     }
 }
