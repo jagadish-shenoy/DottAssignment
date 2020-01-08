@@ -11,8 +11,6 @@
 
     <string name="rating">Rating</string>
 
-    <string name="info_not_available">N/A</string>
-
     <string name="location_permission_request">We would like to suggest you Restaurants nearby.
         This is only possible if we could access your current location
     </string>

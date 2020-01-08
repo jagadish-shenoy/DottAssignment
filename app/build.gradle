@@ -13,10 +13,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField "String", "FSQUARE_CLIENT_ID", "\"52VMXNUZ1ESD3TJFZEVBCI1XC2N1XFCJZPEYZM4KJARAXEQ2\""
-        buildConfigField "String", "FSQUARE_CLIENT_SECRET", "\"DF5GDG0KXYZZAMXRGXG45W4SYDM0IDLOHVBYSQDXEO3RXNOM\""
-        buildConfigField "String", "FSQUARE_API_VERSION", "\"20180323\""
     }
 
     compileOptions {
@@ -64,16 +60,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha02"
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
 
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.13.1'
-
     testImplementation "org.assertj:assertj-core:3.12.1"
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
 // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
+    implementation project(path: ':foursquare')
 
 }

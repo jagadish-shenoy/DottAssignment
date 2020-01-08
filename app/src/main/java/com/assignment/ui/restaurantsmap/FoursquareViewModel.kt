@@ -1,7 +1,6 @@
 package com.assignment.ui.restaurantsmap
 
 import androidx.lifecycle.*
-import com.assignment.foursquare.*
 import com.assignment.foursquare.FoursquareDataSource.VenueDetailsResult
 import com.assignment.foursquare.FoursquareDataSource.VenueSearchResult
 import com.assignment.location.LocationSource
@@ -20,7 +19,7 @@ import kotlinx.coroutines.launch
  * For more details about a restaurant, invoke [fetchRestaurantDetails] api with the venue id.
  * Observe [restaurantDetailsLiveData] for restaurant details.
  */
-class FoursquareViewModel(private val foursquareDataSource: FoursquareDataSource):ViewModel() {
+class FoursquareViewModel(private val foursquareDataSource: com.assignment.foursquare.FoursquareDataSource):ViewModel() {
 
     val restaurantsLiveData:LiveData<VenueSearchResult>
         get() = _restaurantsLiveData

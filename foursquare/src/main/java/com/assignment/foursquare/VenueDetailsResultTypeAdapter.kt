@@ -1,7 +1,6 @@
 package com.assignment.foursquare
 
 import android.content.Context
-import com.assignment.ui.R
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement

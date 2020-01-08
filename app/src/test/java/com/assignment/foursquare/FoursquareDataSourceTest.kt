@@ -20,19 +20,19 @@ class FoursquareDataSourceTest {
     var mockitoRule: MockitoRule = MockitoJUnit.rule()
 
     @Mock
-    private lateinit var venueService: VenueService
+    private lateinit var venueService: com.assignment.foursquare.VenueService
 
-    private lateinit var foursquareDataSource: FoursquareDataSource
+    private lateinit var foursquareDataSource: com.assignment.foursquare.FoursquareDataSource
 
     @Before
     fun before() {
-        foursquareDataSource = FoursquareDataSource(venueService)
+        foursquareDataSource = com.assignment.foursquare.FoursquareDataSource(venueService)
     }
 
     @Test
     fun `searchRestaurants returns VenueSearchResult Failure if response is not successful`() {
         runBlocking {
-            val response = Response.error<Venues>(400, ResponseBody.create(null, ""))
+            val response = Response.error<com.assignment.foursquare.Venues>(400, ResponseBody.create(null, ""))
             whenever(venueService.searchVenues(anyOrNull(), anyOrNull(), anyInt(), anyInt())).thenReturn(response)
             assertThat(foursquareDataSource.searchRestaurants(0.0, 0.0, 100, 100))
                 .isEqualTo(VenueSearchResult.Failure)
@@ -42,7 +42,7 @@ class FoursquareDataSourceTest {
     @Test
     fun `searchRestaurants return VenueSearchResult Failure if response body is empty`() {
         runBlocking {
-            val response = Response.success<Venues>(null)
+            val response = Response.success<com.assignment.foursquare.Venues>(null)
             whenever(venueService.searchVenues(anyOrNull(), anyOrNull(), anyInt(), anyInt())).thenReturn(response)
             assertThat(foursquareDataSource.searchRestaurants(0.0, 0.0, 100, 100))
                 .isEqualTo(VenueSearchResult.Failure)
@@ -51,8 +51,8 @@ class FoursquareDataSourceTest {
 
     @Test
     fun `searchRestaurants return VenueSearchResult Success if response is valid`() {
-        val venue = Venue("1", "Venue", 1.72, 1.72)
-        val response = Response.success(Venues(listOf((venue))))
+        val venue = com.assignment.foursquare.Venue("1", "Venue", 1.72, 1.72)
+        val response = Response.success(com.assignment.foursquare.Venues(listOf((venue))))
         runBlocking {
             whenever(venueService.searchVenues(anyOrNull(), anyOrNull(), anyInt(), anyInt())).thenReturn(response)
 

@@ -3,7 +3,6 @@ package com.assignment.foursquare
 /**
  * Koin Module for com.dott.foursquare package.
  */
-import com.assignment.ui.BuildConfig
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -33,8 +32,14 @@ val foursquareModule = module {
     factory<GsonConverterFactory> {
         GsonConverterFactory.create(
             GsonBuilder()
-                .registerTypeAdapter(Venues::class.java, VenueSearchResultTypeAdapter())
-                .registerTypeAdapter(VenueDetails::class.java, VenueDetailsResultTypeAdapter(androidContext()))
+                .registerTypeAdapter(
+                    Venues::class.java,
+                    VenueSearchResultTypeAdapter()
+                )
+                .registerTypeAdapter(
+                    VenueDetails::class.java,
+                    VenueDetailsResultTypeAdapter(androidContext())
+                )
                 .create())
     }
 

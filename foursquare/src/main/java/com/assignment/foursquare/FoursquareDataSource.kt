@@ -30,7 +30,8 @@ class FoursquareDataSource(private val venueService: VenueService) {
 
     suspend fun searchRestaurants(lat: Double, long: Double, radius:Int, limit: Int): VenueSearchResult {
         return try {
-            val response = venueService.searchVenues("$lat,$long", FOURSQUARE_CATEGORY_ID, radius, limit)
+            val response = venueService.searchVenues("$lat,$long",
+                FOURSQUARE_CATEGORY_ID, radius, limit)
             if (!response.isSuccessful || response.body() == null) {
                 VenueSearchResult.Failure
             } else {

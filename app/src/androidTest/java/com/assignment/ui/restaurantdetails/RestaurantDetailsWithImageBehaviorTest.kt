@@ -23,13 +23,15 @@ class RestaurantDetailsWithImageBehaviorTest {
     var mActivityRule: ActivityTestRule<RestaurantDetailsActivity> = object : ActivityTestRule<RestaurantDetailsActivity>(RestaurantDetailsActivity::class.java) {
 
         override fun getActivityIntent(): Intent {
-            val venueDetails = VenueDetails("1",
+            val venueDetails = com.assignment.foursquare.VenueDetails(
+                "1",
                 "Venue Name",
                 "Venue Description",
                 "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
                 "Venue Address",
                 "+31123456789",
-                "6.0")
+                "6.0"
+            )
 
             return Intent().apply {
                 putExtra("venueDetails", venueDetails)
