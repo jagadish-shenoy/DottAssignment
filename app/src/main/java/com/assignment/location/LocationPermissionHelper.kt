@@ -34,12 +34,4 @@ class LocationPermissionHelper(private val context: Context) {
             PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
         )
     }
-
-    fun onRequestPermissionsResult(
-        requestCode: Int,
-        grantResults: IntArray
-    )=
-        requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
-                && grantResults.isNotEmpty()
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED
 }

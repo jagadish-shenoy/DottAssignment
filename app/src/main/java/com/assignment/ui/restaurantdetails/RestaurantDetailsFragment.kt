@@ -4,15 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
-import com.assignment.ui.R
 import com.assignment.foursquare.VenueDetails
+import com.assignment.ui.R
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_venue_details.*
-import kotlinx.android.synthetic.main.layout_details_card.*
 
-private const val EXTRA_VENUE_DETAILS = "venueDetails"
+const val EXTRA_VENUE_DETAILS = "venueDetails"
 
 class RestaurantDetailsFragment : Fragment() {
 
@@ -49,12 +47,6 @@ class RestaurantDetailsFragment : Fragment() {
 
             venueRatingCard.setTitle(R.string.rating)
             venueRatingCard.setDescription(rating)
-        }
-    }
-
-    companion object {
-        fun newInstance(venueDetails: VenueDetails) =  RestaurantDetailsFragment().apply {
-            arguments = bundleOf(EXTRA_VENUE_DETAILS to venueDetails)
         }
     }
 }
