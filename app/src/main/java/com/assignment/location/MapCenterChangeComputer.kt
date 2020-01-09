@@ -4,12 +4,12 @@ import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 
 /**
- * [LocationSource] which reports the center of the google map when the map is panned / zoomed.
+ * Every time the map is panned, this class helps check if user panned more than 250m
  */
 class MapCenterChangeComputer {
 
     /**
-     * Threshold distance to be panned before a new location is reported by this [LocationSource]
+     * Threshold pan distance
      */
     private val thresholdPanDistance = 250.0f
 

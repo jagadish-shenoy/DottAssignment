@@ -13,7 +13,8 @@ class FoursquareDataSource(private val venueService: VenueService) {
      */
     sealed class VenueSearchResult {
 
-        class Success(val venues: List<Venue>): VenueSearchResult()
+        class Success(val lat: Double, val long: Double, val venues: List<Venue>) :
+            VenueSearchResult()
 
         object Failure: VenueSearchResult()
     }
@@ -35,7 +36,7 @@ class FoursquareDataSource(private val venueService: VenueService) {
             if (!response.isSuccessful || response.body() == null) {
                 VenueSearchResult.Failure
             } else {
-                VenueSearchResult.Success((response.body() as Venues).list)
+                VenueSearchResult.Success(lat, long, (response.body() as Venues).list)
             }
         } catch (e:IOException) {
             VenueSearchResult.Failure

@@ -1,19 +1,14 @@
 package com.assignment.ui.restaurantsmap.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.lifecycle.*
 import com.assignment.foursquare.FoursquareDataSource
-import com.assignment.location.LocationSource
-import com.assignment.location.MapCenterChangeComputer
+import com.assignment.ui.restaurantsmap.SingleLiveEvent
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
 class RestaurantsViewModel(
-    private val foursquareDataSource: FoursquareDataSource,
-    private val locationSource: LocationSource,
-    private val mapCenterChangeComputer: MapCenterChangeComputer
+    private val foursquareDataSource: FoursquareDataSource
 ) : ViewModel() {
 
     companion object {
@@ -26,32 +21,29 @@ class RestaurantsViewModel(
     val restaurantsLiveData: LiveData<FoursquareDataSource.VenueSearchResult>
         get() = _restaurantsLiveData
 
+    private var currentLocationLiveData: LiveData<LatLng>? = null
 
-    fun onMapCenterChanged(latLng: LatLng) {
-        if (mapCenterChangeComputer.isCenterChangeSignificant(latLng)) {
-            fetchRestaurantsNear(latLng)
-        }
+    fun setCurrentLocationLiveData(locationLiveData: LiveData<LatLng>) {
+        currentLocationLiveData = locationLiveData
+    }
+
+    private val currentLocationObserver = Observer<LatLng> {
+        Log.i("RestaurantsViewModel", "Received new location:$it")
+        fetchRestaurantsNear(it)
     }
 
     private val _restaurantsLiveData: MutableLiveData<FoursquareDataSource.VenueSearchResult> =
-        object : MutableLiveData<FoursquareDataSource.VenueSearchResult>() {
+        object : SingleLiveEvent<FoursquareDataSource.VenueSearchResult>() {
             override fun onActive() {
                 super.onActive()
-                //Listen for new location when the live data is observed
-                locationSource.start(locationCallback)
+                currentLocationLiveData?.observeForever(currentLocationObserver)
             }
 
             override fun onInactive() {
                 super.onInactive()
-                locationSource.stop()
+                currentLocationLiveData?.removeObserver(currentLocationObserver)
             }
         }
-
-    private val locationCallback = object : LocationSource.LocationCallback {
-        override fun onNewLocation(latLng: LatLng) {
-            fetchRestaurantsNear(latLng)
-        }
-    }
 
     private fun fetchRestaurantsNear(latLng: LatLng) {
         viewModelScope.launch {
@@ -61,14 +53,7 @@ class RestaurantsViewModel(
                 SEARCH_RADIUS,
                 LIMIT
             )
-
-            if (venueSearchResult is FoursquareDataSource.VenueSearchResult.Success &&
-                venueSearchResult.venues.isNotEmpty()
-            ) {
-                _restaurantsLiveData.postValue(venueSearchResult)
-            } else if (venueSearchResult is FoursquareDataSource.VenueSearchResult.Failure) {
-                _restaurantsLiveData.postValue(venueSearchResult)
-            }
+            _restaurantsLiveData.postValue(venueSearchResult)
         }
     }
 }

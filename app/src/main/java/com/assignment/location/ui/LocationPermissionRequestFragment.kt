@@ -48,6 +48,8 @@ class LocationPermissionRequestFragment:Fragment() {
         }
     }
 
+    //Show different errors based on if the permission can be asked again
+
     private fun showPermissionDeniedError() {
         Snackbar.make(
             requireActivity().findViewById(android.R.id.content),

@@ -1,8 +1,5 @@
 package com.assignment.foursquare
 
-/**
- * Koin Module for com.dott.foursquare package.
- */
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext

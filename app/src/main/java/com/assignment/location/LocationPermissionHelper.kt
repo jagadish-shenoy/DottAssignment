@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 /**
  * Helper class to check if the location permission has been granted, if not request for it.
  *
- * This class helps keep the clutter out of [Activity] implementation.
+ * This class helps keep the clutter out of UI classes.
  */
 class LocationPermissionHelper(private val context: Context) {
 
