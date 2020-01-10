@@ -1,9 +1,7 @@
 package com.assignment.ui.restaurantsmap.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.assignment.foursquare.FoursquareDataSource
-import com.assignment.ui.restaurantsmap.SingleLiveEvent
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
@@ -28,7 +26,6 @@ class RestaurantsViewModel(
     }
 
     private val currentLocationObserver = Observer<LatLng> {
-        Log.i("RestaurantsViewModel", "Received new location:$it")
         fetchRestaurantsNear(it)
     }
 

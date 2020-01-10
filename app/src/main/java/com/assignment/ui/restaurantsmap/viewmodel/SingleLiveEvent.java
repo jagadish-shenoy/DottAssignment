@@ -1,4 +1,4 @@
-package com.assignment.ui.restaurantsmap;
+package com.assignment.ui.restaurantsmap.viewmodel;
 
 /*
  *  Copyright 2017 Google Inc.
@@ -17,6 +17,7 @@ package com.assignment.ui.restaurantsmap;
  */
 
 import android.util.Log;
+
 import androidx.annotation.MainThread;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
