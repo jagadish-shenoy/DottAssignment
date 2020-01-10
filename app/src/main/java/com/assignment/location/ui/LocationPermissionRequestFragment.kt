@@ -35,6 +35,14 @@ class LocationPermissionRequestFragment:Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        //When user comes back from setting, this automatically land user to next screen
+        if (locationPermissionHelper.isPermissionGranted()) {
+            navController.navigate(R.id.action_locationPermissionRequestFragment_to_restaurantsMapFragment)
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
