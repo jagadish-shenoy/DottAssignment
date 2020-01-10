@@ -19,12 +19,11 @@ class MapCenterChangeComputer {
         return if (lastCenter == null) {
             lastCenter = newCenter
             false
+        } else if (newCenter.distanceTo(lastCenter!!) > thresholdPanDistance) {
+            lastCenter = newCenter
+            true
         } else {
-            val isChangeSignificant = newCenter.distanceTo(lastCenter!!) > thresholdPanDistance
-            if (isChangeSignificant) {
-                lastCenter = newCenter
-            }
-            isChangeSignificant
+            false
         }
     }
 
