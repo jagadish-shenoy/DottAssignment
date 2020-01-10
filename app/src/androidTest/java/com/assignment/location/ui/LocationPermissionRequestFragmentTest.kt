@@ -1,5 +1,7 @@
 package com.assignment.location.ui
 
+import android.content.pm.PackageManager.PERMISSION_GRANTED
+import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -7,10 +9,15 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.rule.GrantPermissionRule
+import com.assignment.location.LocationPermissionHelper
 import com.assignment.ui.R
+import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.whenever
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnit
@@ -22,13 +29,20 @@ class LocationPermissionRequestFragmentTest {
     @get:Rule
     var mockitoRule: MockitoRule = MockitoJUnit.rule()
 
-    @get:Rule
-    var mRuntimePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
-        android.Manifest.permission.ACCESS_FINE_LOCATION
-    )
+    @Mock
+    private lateinit var locationPermissionHelper: LocationPermissionHelper
 
     @Mock
     private lateinit var navController: NavController
+
+    @Before
+    fun beforeEveryTest() {
+        loadKoinModules(
+            module(override = true) {
+                factory { locationPermissionHelper }
+            }
+        )
+    }
 
     @Test
     fun verifyLocationPermissionScreenElements() {
@@ -45,7 +59,17 @@ class LocationPermissionRequestFragmentTest {
 
     @Test
     fun shouldNavigateToRestaurantsMapScreenOnPermissionGrant() {
-        startFragmentWithMockNavController()
+        whenever(locationPermissionHelper.isPermissionGranted()).thenReturn(true)
+
+        startFragmentWithMockNavController().apply {
+            onFragment { fragment ->
+                fragment.onRequestPermissionsResult(
+                    100,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    IntArray(PERMISSION_GRANTED)
+                )
+            }
+        }
 
         Espresso.onView(withId(R.id.ready_to_grant_permission))
             .check(matches(isDisplayed()))
@@ -55,13 +79,54 @@ class LocationPermissionRequestFragmentTest {
 
     }
 
-    private fun startFragmentWithMockNavController() {
+    @Test
+    fun verifyPermissionDeniedErrorMessageDisplayed() {
+        startFragmentWithMockNavController().apply {
+            onFragment { fragment ->
+                fragment.onRequestPermissionsResult(
+                    100,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    IntArray(0)
+                )
+            }
+        }
+
+        Espresso.onView(withText(R.string.location_permission_denied)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun verifyPermissionDeniedDontAskErrorMessageDisplayed() {
+        //mock permission denied + don't ask again
+        whenever(locationPermissionHelper.isPermissionDeniedAndDontAskAgain(anyOrNull())).thenReturn(
+            true
+        )
+
+        startFragmentWithMockNavController().apply {
+            onFragment { fragment ->
+                fragment.onRequestPermissionsResult(
+                    100,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    IntArray(0)
+                )
+            }
+        }
+
+        Espresso.onView(withText(R.string.location_permission_denied_dont_ask))
+            .check(matches(isDisplayed()))
+        Espresso.onView(withText(R.string.location_permission_denied_go_to_settings))
+            .check(matches(isDisplayed()))
+    }
+
+    private fun startFragmentWithMockNavController(): FragmentScenario<LocationPermissionRequestFragment> {
         // Create a graphical FragmentScenario for the TitleScreen
-        val fragmentScenario = launchFragmentInContainer<LocationPermissionRequestFragment>()
+        val fragmentScenario =
+            launchFragmentInContainer<LocationPermissionRequestFragment>(themeResId = R.style.AppTheme)
 
         // Set the NavController property on the fragment
         fragmentScenario.onFragment { fragment ->
             Navigation.setViewNavController(fragment.requireView(), navController)
         }
+
+        return fragmentScenario
     }
 }
