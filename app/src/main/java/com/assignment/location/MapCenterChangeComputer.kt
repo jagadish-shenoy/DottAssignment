@@ -16,10 +16,16 @@ class MapCenterChangeComputer {
     private var lastCenter: LatLng? = null
 
     fun isCenterChangeSignificant(newCenter: LatLng): Boolean {
-        val isChangeSignificant =
-            lastCenter?.let { newCenter.distanceTo(it) > thresholdPanDistance } ?: false
-        lastCenter = newCenter
-        return isChangeSignificant
+        return if (lastCenter == null) {
+            lastCenter = newCenter
+            false
+        } else {
+            val isChangeSignificant = newCenter.distanceTo(lastCenter!!) > thresholdPanDistance
+            if (isChangeSignificant) {
+                lastCenter = newCenter
+            }
+            isChangeSignificant
+        }
     }
 
     /**

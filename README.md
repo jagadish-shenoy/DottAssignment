@@ -1,4 +1,4 @@
-# DottAssignment
+# Assignment
 
 Task <br /> 
 ● Use the FourSquare API to display the restaurants around your current location on the map <br /> 
