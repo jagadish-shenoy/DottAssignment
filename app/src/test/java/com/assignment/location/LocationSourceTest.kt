@@ -20,8 +20,7 @@ import org.mockito.junit.MockitoRule
 
 class LocationSourceTest {
 
-    @Rule
-    @JvmField
+    @get:Rule
     var mockitoRule: MockitoRule = MockitoJUnit.rule()
 
     @Mock

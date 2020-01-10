@@ -8,8 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.assignment.location.LocationPermissionHelper
 import com.assignment.ui.R
 import com.google.android.material.snackbar.Snackbar
@@ -21,7 +20,8 @@ class LocationPermissionRequestFragment:Fragment() {
 
     private val locationPermissionHelper: LocationPermissionHelper by inject()
 
-    private lateinit var navController: NavController
+    private val navController
+        get() = requireView().findNavController()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_location_permission, container, false)
@@ -29,7 +29,6 @@ class LocationPermissionRequestFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
 
         ready_to_grant_permission.setOnClickListener {
             locationPermissionHelper.requestPermission(this@LocationPermissionRequestFragment)
@@ -61,7 +60,7 @@ class LocationPermissionRequestFragment:Fragment() {
     private fun showPermissionDeniedGotoSettingsError() {
         Snackbar.make(
             requireActivity().findViewById(android.R.id.content),
-            R.string.location_permission_denied,
+            R.string.location_permission_denied_dont_ask,
             Snackbar.LENGTH_INDEFINITE
         ).setAction(R.string.location_permission_denied_go_to_settings) {
             gotoAppSettings()
