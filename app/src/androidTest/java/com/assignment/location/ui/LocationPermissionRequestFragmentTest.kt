@@ -59,10 +59,9 @@ class LocationPermissionRequestFragmentTest {
 
     @Test
     fun shouldNavigateToRestaurantsMapScreenOnPermissionGrant() {
-        whenever(locationPermissionHelper.isPermissionGranted()).thenReturn(true)
-
         startFragmentWithMockNavController().apply {
             onFragment { fragment ->
+                whenever(locationPermissionHelper.isPermissionGranted()).thenReturn(true)
                 fragment.onRequestPermissionsResult(
                     100,
                     arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
