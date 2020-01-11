@@ -1,4 +1,4 @@
-package com.assignment.ui.restaurantsmap.viewmodel;
+package com.assignment.util;
 
 /*
  *  Copyright 2017 Google Inc.

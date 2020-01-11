@@ -1,4 +1,4 @@
-package com.assignment.location.ui
+package com.assignment.ui.permission
 
 import android.content.Intent
 import android.net.Uri.fromParts

@@ -20,7 +20,7 @@ import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 
-class OneShotLocationProviderTest {
+class LocationProviderTest {
 
     @get:Rule
     var mockitoRule: MockitoRule = MockitoJUnit.rule()
@@ -31,24 +31,24 @@ class OneShotLocationProviderTest {
     @Mock
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
-    private lateinit var oneShotLocationProvider: OneShotLocationProvider
+    private lateinit var locationProvider: LocationProvider
 
     @Before
     fun beforeTest() {
-        oneShotLocationProvider = OneShotLocationProvider(fusedLocationProviderClient)
+        locationProvider = LocationProvider(fusedLocationProviderClient)
     }
 
     @Test
     fun `listen for update from location provider on active`() {
-        oneShotLocationProvider.locationLiveData.observeForever {}
+        locationProvider.locationLiveData.observeForever {}
         verify(fusedLocationProviderClient).requestLocationUpdates(anyOrNull(), anyOrNull(), anyOrNull())
     }
 
     @Test
     fun `stop listen for location update on inactive`() {
         val observer = Observer<LatLng> {}
-        oneShotLocationProvider.locationLiveData.observeForever(observer)
-        oneShotLocationProvider.locationLiveData.removeObserver(observer)
+        locationProvider.locationLiveData.observeForever(observer)
+        locationProvider.locationLiveData.removeObserver(observer)
         verify(fusedLocationProviderClient).removeLocationUpdates(any<LocationCallback>())
     }
 
@@ -57,7 +57,7 @@ class OneShotLocationProviderTest {
         @Suppress("UNCHECKED_CAST")
         val observer = mock(Observer::class.java) as Observer<LatLng>
 
-        oneShotLocationProvider.locationLiveData.observeForever(observer)
+        locationProvider.locationLiveData.observeForever(observer)
 
         `mock location update`()
 
@@ -73,12 +73,12 @@ class OneShotLocationProviderTest {
                 anyOrNull()
             )
         ).thenThrow(SecurityException())
-        oneShotLocationProvider.locationLiveData.observeForever {}
+        locationProvider.locationLiveData.observeForever {}
     }
 
     @Test
     fun `should not listen for location update after first result`() {
-        oneShotLocationProvider.locationLiveData.observeForever {}
+        locationProvider.locationLiveData.observeForever {}
         `mock location update`()
         verify(fusedLocationProviderClient).removeLocationUpdates(any<LocationCallback>())
     }

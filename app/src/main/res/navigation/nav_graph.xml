@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nav_graph"
+        app:startDestination="@id/locationPermissionRequestFragment">
+
+    <fragment
+            android:id="@+id/locationPermissionRequestFragment"
+            android:name="com.assignment.ui.permission.LocationPermissionRequestFragment"
+            android:label="LocationPermissionRequestFragment" >
+        <action
+                android:id="@+id/action_locationPermissionRequestFragment_to_restaurantsMapFragment"
+                app:destination="@id/restaurantsMapFragment"
+                app:popUpTo="@+id/locationPermissionRequestFragment"
+                app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+            android:id="@+id/restaurantsMapFragment"
+            android:name="com.assignment.ui.restaurantsmap.RestaurantsMapFragment"
+            android:label="fragment_restaurants_maps"
+            tools:layout="@layout/fragment_restaurants_maps" >
+        <action
+                android:id="@+id/action_restaurantsMapFragment_to_restaurantDetailsFragment"
+                app:destination="@id/restaurantDetailsFragment">
+            <argument android:name="venueDetails" app:argType="com.assignment.foursquare.VenueDetails" app:nullable="false" />
+        </action>
+    </fragment>
+    <fragment
+            android:id="@+id/restaurantDetailsFragment"
+            android:name="com.assignment.ui.restaurantdetails.RestaurantDetailsFragment"
+            android:label="RestaurantDetailsFragment" />
+</navigation>

@@ -7,17 +7,17 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class MapCenterChangeComputerTest {
+class LocationChangeComputerTest {
 
     @Test
     fun shouldNotReportSignificantChange() {
-        val mapCenterChangeComputer = MapCenterChangeComputer()
-        mapCenterChangeComputer.isCenterChangeSignificant(LatLng(52.3186184, 4.9428585))
+        val mapCenterChangeComputer = LocationChangeComputer()
+        mapCenterChangeComputer.isChangeSignificant(LatLng(52.3186184, 4.9428585))
 
         assertThat(
 
             //Change less than 250m
-            mapCenterChangeComputer.isCenterChangeSignificant(
+            mapCenterChangeComputer.isChangeSignificant(
                 LatLng(
                     52.3186184,
                     4.9428566
@@ -28,13 +28,13 @@ class MapCenterChangeComputerTest {
 
     @Test
     fun shouldReportSignificantChange() {
-        val mapCenterChangeComputer = MapCenterChangeComputer()
-        mapCenterChangeComputer.isCenterChangeSignificant(LatLng(52.3186184, 4.9428585))
+        val mapCenterChangeComputer = LocationChangeComputer()
+        mapCenterChangeComputer.isChangeSignificant(LatLng(52.3186184, 4.9428585))
 
         assertThat(
 
             //Change less than 250m
-            mapCenterChangeComputer.isCenterChangeSignificant(
+            mapCenterChangeComputer.isChangeSignificant(
                 LatLng(
                     50.320276137472554,
                     2.931683167815208
