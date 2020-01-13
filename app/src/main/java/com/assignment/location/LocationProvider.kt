@@ -4,6 +4,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.assignment.util.OpenForTest
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng
  *
  * Location can be modified using [setCurrentLocation] api
  */
+@OpenForTest
 class LocationProvider(private val fusedLocationProviderClient: FusedLocationProviderClient) {
 
     val locationLiveData: LiveData<LatLng>

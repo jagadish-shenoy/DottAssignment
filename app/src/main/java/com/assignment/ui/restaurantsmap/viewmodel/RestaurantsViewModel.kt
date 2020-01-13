@@ -4,9 +4,11 @@ import androidx.lifecycle.*
 import com.assignment.foursquare.FoursquareDataSource
 import com.assignment.location.LocationChangeComputer
 import com.assignment.location.LocationProvider
+import com.assignment.util.OpenForTest
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
+@OpenForTest
 class RestaurantsViewModel(
     private val foursquareDataSource: FoursquareDataSource,
     private val locationProvider: LocationProvider,

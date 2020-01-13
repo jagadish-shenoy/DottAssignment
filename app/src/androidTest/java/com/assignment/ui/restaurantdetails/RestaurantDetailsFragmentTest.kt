@@ -6,6 +6,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.assignment.foursquare.VenueDetails
 import com.assignment.ui.R
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,7 +15,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class RestaurantDetailsFragmentTest {
 
-    private val venueDetails = com.assignment.foursquare.VenueDetails(
+    private val venueDetails = VenueDetails(
         "1",
         "Venue Name",
         "Venue Description",

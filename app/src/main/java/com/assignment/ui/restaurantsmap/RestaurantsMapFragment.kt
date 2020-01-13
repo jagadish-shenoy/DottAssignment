@@ -1,6 +1,7 @@
 package com.assignment.ui.restaurantsmap
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +9,7 @@ import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.assignment.foursquare.FoursquareDataSource.VenueDetailsResult
 import com.assignment.foursquare.FoursquareDataSource.VenueSearchResult
 import com.assignment.foursquare.Venue
@@ -47,7 +47,8 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var googleMap: GoogleMap
 
-    private lateinit var navController: NavController
+    private val navController
+        get() = requireView().findNavController()
 
     /**
      * Tracks if camera needs to be aligned to the search result. Unless this state is saved
@@ -73,7 +74,6 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
         (childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment)
             .getMapAsync(this)
     }
@@ -127,6 +127,7 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
             val latLng = LatLng(venue.latitude, venue.longitude)
             val marker = googleMap.addMarker(MarkerOptions().position(latLng).title(venue.name))
             marker.tag = venue
+            Log.i("log", venue.toString())
         }
 
         if(mapAlignmentNeeded) {
