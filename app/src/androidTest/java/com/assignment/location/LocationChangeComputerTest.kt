@@ -11,7 +11,7 @@ class LocationChangeComputerTest {
 
     @Test
     fun shouldNotReportSignificantChange() {
-        val mapCenterChangeComputer = LocationChangeComputer()
+        val mapCenterChangeComputer = LocationChangeComputer(500f)
         mapCenterChangeComputer.isChangeSignificant(LatLng(52.3186184, 4.9428585))
 
         assertThat(
@@ -28,7 +28,7 @@ class LocationChangeComputerTest {
 
     @Test
     fun shouldReportSignificantChange() {
-        val mapCenterChangeComputer = LocationChangeComputer()
+        val mapCenterChangeComputer = LocationChangeComputer(500f)
         mapCenterChangeComputer.isChangeSignificant(LatLng(52.3186184, 4.9428585))
 
         assertThat(

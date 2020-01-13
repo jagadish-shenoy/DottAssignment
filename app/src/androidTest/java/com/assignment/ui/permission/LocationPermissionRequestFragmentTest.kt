@@ -1,4 +1,4 @@
-package com.assignment.location.ui
+package com.assignment.ui.permission
 
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import androidx.fragment.app.testing.FragmentScenario
@@ -11,7 +11,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.assignment.location.LocationPermissionHelper
 import com.assignment.ui.R
-import com.assignment.ui.permission.LocationPermissionRequestFragment
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Before
